@@ -23,3 +23,4 @@ RTM/Z80 is a “low profile” multitasking system; it is written entirely in Z8
 RTM/Z80 does not pretend to be a “real-time” system; for this target, you need much more powerful CPU power; the 7.3728 MHz Z80 is a low-placed processor in this perspective.
 Builing RTM/Z80 applications does not imply the use of any Unix/Linux development platform. All you need is CP/M, knowledge of Z80 assembly language or C language and being used to operate the HiTech tools (assembler, C compiler, linker).
 RTM/Z80 is not a “concurrent” of the many Z80 multitasking systems available on the market, it is only a learning tool for those who want to understand the “tips & tricks” of multitasking; because of this, it’s structure is simple and straightforward. However, the author tried to build also a versatile and efficient system, with performances comparable with other popular Z80 multitasking systems.
+ 
