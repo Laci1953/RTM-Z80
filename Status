@@ -1,2 +1,2 @@
-Source code and all related resources will be added soon,
-after finishing some testing of the RTM/Z80 EPROM/RAM version
+Finished testing on Z80SIM, RC2014 (RAM version on SC108, EPROM version on SC108 and Memory Module)
+Future plans: add PIO driver
