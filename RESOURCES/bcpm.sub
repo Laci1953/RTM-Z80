@@ -1,0 +1,3 @@
+xsub
+c
+ -iJ0: -v -o $1 rt.lib
