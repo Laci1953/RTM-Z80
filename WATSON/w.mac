@@ -1,0 +1,157 @@
+;
+;	Copyright (C) 2021 by Ladislau Szilagyi
+;
+CPM	equ     0       ;1=CPM, 0=RC2014
+MM	equ	0	;1=Memory Module, 0=SC108
+ROM	equ	0	;1=stored in ROM	
+;
+;	RC2014 memory map
+;
+; 0000H - A000H : sys & app code, data
+; A000H - C000H : Watson buffer, loads 8K from the 64K UPPER RAM
+; C000H - E000H : Dynamic memory, loaded from E000 - FFFFH UPPER RAM
+; E000H - FC00H : Watson code & data
+; FF00H - FFFFH : up low routines
+;
+;
+PAGE0   equ     0000H
+PAGE1   equ     2000H
+;
+SIO_A_C equ     80H
+SIO_A_D equ     81H
+;
+;       SCM API without HL,DE,BC being conserved
+MACRO   SCMF    N
+        ld      c,N
+        rst     30H
+ENDM
+;
+MACRO   OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
+ENDM
+;
+MACRO INCHAR
+COND    1-CPM
+        call	ReadChar
+ENDC
+COND    CPM
+7:	in	a,(0)
+	or	a
+	jr	z,7b
+	in	a,(1)
+ENDC
+ENDM
+;
+MACRO   PRINT   msg
+        push    hl
+        ld      hl,msg
+        call    TypeString
+        pop     hl
+ENDM
+;
+;       SCM API functions used
+;
+RESET   equ     0       ;reset
+;
+CR              equ     0DH
+LF              equ     0AH
+BLANK           equ     20H
+DELETE          equ     7FH
+BACKSPACE       equ     8
+ESC             equ     1BH             ; ESC[K is VT100 "erase till end of line"
+FORDEL          equ     5BH             ;'['
+TOEOL           equ     4BH             ;'K'
+;
+NXPV_OFF        equ     16      ;relative offset of (NextTask,PrevTask)
+;
+;	Address of Registers saved after a breakpoint
+;	order: AF,BC,DE,HL,AF',BC',DE',HL',IX,IY,SP,PC
+;
+_PC	equ	0DFFEH
+_REGS	equ	0DFE8H
+;
+;	Pointers of RTM/Z80 sys data
+;
+COND	1-CPM
+W_P	equ	0D400H
+ENDC
+COND	CPM
+W_P	equ	7F00H
+ENDC
+;
+;	Used to load Dynamic Memory from UP(E000-FF00) to LOW(C000-DF00)
+;	(old, from hexboot/mmboot)
+O_UP_TO_LOW_6W	equ	0DF4DH
+O_UP_TO_LOW_4B	equ	0DF7CH
+O_LOW_TO_UP_6W	equ	0DF91H
+O_LOW_TO_UP_4B	equ	0DFC7H
+;
+;	(new, loaded in watson)
+;	Used to load Dynamic Memory from UP(FF00-FFFF) to LOW(DF00-E000)
+;	and Code from UP to LOW
+;
+N_UP_TO_LOW_6W	equ	0FFBCH
+N_UP_TO_LOW_4B	equ	0FFEBH
+;
+;-----------------------------------------------------------------------1-MM
+COND	1-MM
+
+MEMP_PORT       equ     38H
+;
+ROMOUT          equ     00000001B
+ROMIN           equ     00000000B
+LOWER_64RAM     equ     00000000B
+UPPER_64RAM     equ     10000000B
+
+MACRO	LOW_RAM
+	ld	a,LOWER_64RAM .or. ROMOUT
+	out	(MEMP_PORT),a
+ENDM
+
+MACRO	UP_RAM
+	ld	a,UPPER_64RAM .or. ROMOUT
+	out	(MEMP_PORT),a	
+ENDM
+
+MACRO	ROM_IN
+	xor	a
+	out	(MEMP_PORT),a
+ENDM
+
+ENDC
+;-----------------------------------------------------------------------1-MM
+;-----------------------------------------------------------------------MM
+COND	MM
+
+MM_RAM_P	equ	30H
+
+MM_UP_RAM	equ	1
+MM_LOW_RAM	equ	0
+
+MACRO	LOW_RAM
+	ld	a,MM_LOW_RAM
+	out	(MM_RAM_P),a
+ENDM
+
+MACRO	UP_RAM
+	ld	a,MM_UP_RAM
+	out	(MM_RAM_P),a
+ENDM
+
+MM_ROM_P	equ	38H
+
+MM_ROM_IN	equ	0
+MM_ROM_OUT	equ	1
+
+MACRO	ROM_IN
+	ld	a,MM_ROM_IN
+	out	(MM_ROM_P),a
+ENDM
+
+ENDC
+;-----------------------------------------------------------------------MM
