@@ -1,3 +1,3 @@
 Finished testing on Z80SIM, RC2014 (RAM version on SC108, EPROM version on SC108 and Memory Module)
-Future plans: add PIO driver
-Fixed issue related to "out-of-memory" when building on 56K CP/M 
+Pending issue: on some CP/M systems, ZAS issues "out-of-memory" err msg when assembling rtsys1.as and/or rtsys2.as
+I tried to solve-it, but I cannot test-it (I run CPM only on Z80SIM, and I get no err msgs...)
