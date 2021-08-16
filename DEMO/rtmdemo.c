@@ -1,5 +1,5 @@
 /*
- * RTM/Z80  -  a Real Time Monitor for Z80 computers
+ * RTM/Z80  -  a Retro Tiny Multitasking system for Z80 computers
  *
  * Copyright (C) 2021 by Ladislau Szilagyi
  *
