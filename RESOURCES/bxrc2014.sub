@@ -1,8 +1,0 @@
-xsub
-zas -j $2.as
-c
- -ij0: -v -c -o $1.c
-link
- -x -z -Ptext=0,data,bss=0D000H -os.obj rtsys.obj queue.obj io.obj rtclk.obj mailbox.obj \
- cmd.obj hexload.obj balloc.obj dlist.obj util.obj snapshot.obj crtcpm.obj $1.obj $2.obj csv.obj libc.lib
-objtohex s.obj $1.hex
