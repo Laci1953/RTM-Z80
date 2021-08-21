@@ -1,7 +1,0 @@
-xsub
-link
-  -x -z -ptext=0/0,fcoo=0FC00H/,bss=0D000H/ -os.obj -mv1.map -dromrtm1.sym rtsys1.obj rtsys2.obj queue.obj io.obj rtclk.obj\
-  cmd.obj hexload.obj mailbox.obj balloc.obj dlist.obj util.obj snapshot.obj boot.obj
-objtohex s.obj romrtm1.hex
-symtoas romrtm1.as romrtm1.sym
-zas romrtm1.as
