@@ -1,0 +1,65 @@
+;
+;	Copyright (C) 2021 by Ladislau Szilagyi
+;
+;----------------------------------------------------------------------NOCPM
+COND    NOCPM
+;
+;---------------------------------------------------------------DIG_IO
+COND	DIG_IO
+;
+	GLOBAL	IO_LEDS
+;
+LED_PORT	equ	0
+;
+;	LED definitions - bit affected
+;
+RTMZ80		equ	0	;RTM/Z80 running
+CLOCK		equ	1	;1 second ON/OFF
+ERR_STACK	equ	2	;stack warning 
+ERR_TCB		equ	3	;wrong TCB
+ERR_SEM		equ	4	;wrong Semaphore
+ERR_FULLMEM	equ	5	;no more free memory
+ERR_ESC		equ	6	;SIO A External Status Change
+ERR_SRC		equ	7	;SIO A Special Receive Condition
+;
+;	Trigger definitions - bit affected
+;
+SHUTDOWN	equ	0	;shutdown RTM/Z80
+ROUNDROBIN	equ	1	;switch to RoundRobin algorithm
+TESTFREEMEM	equ	2	;test free memory
+SNAPSHOT	equ	3	;moves 64K to UP_RAM and shuts down
+;
+
+MACRO	SET_LEDS	value
+	ld	a,value
+	ld	(IO_LEDS),a
+	out	(LED_PORT),a
+ENDM
+
+MACRO	OUT_LEDS	bitnr
+	ld	a,(IO_LEDS)
+	set	bitnr,a
+	ld	(IO_LEDS),a
+	out	(LED_PORT),a
+ENDM
+
+MACRO	TOGGLE_LEDS	bitnr
+	ld	a,(IO_LEDS)
+	bit	bitnr,a
+	set	bitnr,a
+	jr	z,7777f
+	res	bitnr,a
+7777:
+	ld	(IO_LEDS),a
+	out	(LED_PORT),a
+ENDM
+
+;MACRO	TEST_TRIGGER	bitnr
+;	in	a,(LED_PORT)
+;	bit	bitnr,a
+;ENDM
+
+ENDC
+;---------------------------------------------------------------DIG_IO
+ENDC
+;----------------------------------------------------------------------NOCPM
