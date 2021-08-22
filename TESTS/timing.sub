@@ -1,0 +1,31 @@
+xsub
+zas -j talloc.as
+zas -j twait.as
+zas -j tswitch.as
+zas -j trun.as
+zas -j tqt.as
+zas -j tmt.as
+link
+ -x -z -Ptext=0,data,bss=0D000H -os.obj rtsys1a.obj rtsys1b.obj rtsys2a.obj rtsys2b.obj cmd.obj hexload.obj \
+ queue.obj io.obj rtclk.obj dlist.obj mailbox.obj balloc.obj util.obj regchk.obj snapshot.obj talloc.obj
+objtohex s.obj talloc.hex
+link
+ -x -z -Ptext=0,data,bss=0D000H -os.obj rtsys1a.obj rtsys1b.obj rtsys2a.obj rtsys2b.obj  cmd.obj hexload.obj \
+ queue.obj io.obj rtclk.obj dlist.obj mailbox.obj balloc.obj util.obj regchk.obj snapshot.obj twait.obj
+objtohex s.obj twait.hex
+link
+ -x -z -Ptext=0,data,bss=0D000H -os.obj rtsys1a.obj rtsys1b.obj rtsys2a.obj rtsys2b.obj  cmd.obj hexload.obj \
+ queue.obj io.obj rtclk.obj dlist.obj mailbox.obj balloc.obj util.obj regchk.obj snapshot.obj tswitch.obj
+objtohex s.obj tswitch.hex
+link
+ -x -z -Ptext=0,data,bss=0D000H -os.obj rtsys1a.obj rtsys1b.obj rtsys2a.obj rtsys2b.obj  cmd.obj hexload.obj \
+ queue.obj io.obj rtclk.obj dlist.obj mailbox.obj balloc.obj util.obj regchk.obj snapshot.obj trun.obj
+objtohex s.obj trun.hex
+link
+ -x -z -Ptext=0,data,bss=0D000H -os.obj rtsys1a.obj rtsys1b.obj rtsys2a.obj rtsys2b.obj  cmd.obj hexload.obj \
+ queue.obj io.obj rtclk.obj dlist.obj mailbox.obj balloc.obj util.obj regchk.obj snapshot.obj tqt.obj
+objtohex s.obj tqt.hex
+link
+ -x -z -Ptext=0,data,bss=0D000H -os.obj rtsys1a.obj rtsys1b.obj rtsys2a.obj rtsys2b.obj  cmd.obj hexload.obj \
+ queue.obj io.obj rtclk.obj dlist.obj mailbox.obj balloc.obj util.obj regchk.obj snapshot.obj tmt.obj
+objtohex s.obj tmt.hex
