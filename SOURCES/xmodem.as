@@ -157,7 +157,7 @@ Retry:
 	ld	de,(Sem)
 	ld	c,PACK_LEN
 	ld	iy,(Timer)
-	ld	ix,1000		;5 secs
+	ld	ix,2000		;10 secs
 	call	__ReadB
 	ld	hl,(Sem)
 	call	__Wait
