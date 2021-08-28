@@ -15,6 +15,8 @@
 ;
 *Include config.mac
 ;
+COND	IO_COMM
+
 COND	C_LANG
 	GLOBAL _XmRecv
 	GLOBAL _XmSend
@@ -416,3 +418,4 @@ Get1B:
 	ld	a,(bufbyte)
 	ret
 ;
+ENDC
