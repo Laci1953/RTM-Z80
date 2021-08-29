@@ -5,3 +5,5 @@ void ReadB(void* buf, char len, void* SemAddr, void* Timer, short TimeOut);
 short GetCountB(void);
 void Reset_RWB(void);
 short CTRL_C(void);
+short XmRecv(struct MailBox* MB);
+short XmSend(struct MailBox* MB);
