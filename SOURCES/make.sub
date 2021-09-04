@@ -1,0 +1,22 @@
+zas -j dlist.as
+zas -j balloc.as
+zas rtsys1a.as
+zas -j rtsys1b.as
+zas -j rtsys2a.as
+zas -j rtsys2b.as
+zas -j rtclk.as
+zas -j queue.as
+zas -j mailbox.as
+zas -j io.as
+zas -j snapshot.as
+zas -j hexload.as
+zas -j util.as
+zas -j cmd.as
+zas boot.as
+zas -j csv.as
+zas -j xmodem.as
+zas bdos.as
+zas bios.as
+era rt.lib
+libr r rt.lib rtsys1a.obj rtsys1b.obj rtsys2a.obj rtsys2b.obj cmd.obj snapshot.obj hexload.obj io.obj 
+libr r rt.lib xmodem.obj queue.obj rtclk.obj mailbox.obj balloc.obj dlist.obj util.obj boot.obj csv.obj bdos.obj bios.obj
