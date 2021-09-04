@@ -1,5 +1,5 @@
 ; sample file-to-file copy program
-
+; copy C:T.TXT to D:X.TXT
 *Include config.mac
 *Include apiasm.mac
 
