@@ -67,7 +67,6 @@ CHGDRV:DEFB 0               ;change in drives flag (0=no change).
 NBYTES:DEFW 0               ;byte counter used by TYPE.
  DEFB 0,0,0,0,0,0,0,0,0,0,0,0,0
 
-IOBYTE:defs 	1;i/o definition byte.
 TDRIVE:defs	1;current drive name and user number.
 TBUFF:defs	80h;i/o buffer and command line storage.
 
