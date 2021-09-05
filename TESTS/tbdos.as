@@ -7,7 +7,6 @@
 
 	psect text
 
-printf 	equ 9 	; print buffer func#
 openf 	equ 15 	; open file func#
 closef 	equ 16 	; close file func#
 deletef equ 19 	; delete file func#
