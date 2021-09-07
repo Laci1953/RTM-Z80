@@ -1,3 +1,4 @@
 Finished testing on Z80SIM, RC2014 (RAM version on SC108, EPROM+RAM version on SC108 and Memory Module)
-Added CP/M disk fies support
+Added CP/M disk files support
 Added XMODEM support
+Added support for 64KB Upper bank RAM access 
