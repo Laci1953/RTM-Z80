@@ -92,6 +92,7 @@ void Task(void)
       CON_Write(msgFAIL,6,S);
       Wait(S);
     }
+    StopTask(GetCrtTask());
   }
 
   p=(char*)0;
