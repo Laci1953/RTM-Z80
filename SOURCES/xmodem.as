@@ -15,7 +15,7 @@
 ;
 *Include config.mac
 
-TERATERM_TEST	equ	0
+TERATERM_TEST	equ	1	;1=receiver waits 20 sec before sending NAK
 
 COND	IO_COMM
 ;
