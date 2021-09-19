@@ -7,4 +7,7 @@ DEMO/HEX/Z80SIM contains a demo application, to be run on Z80SIM CP/M
 
 DEMO/HEX/SC108 contains a demo application, to be run on RC2014 SC108 (using RESOURCES/HEXBOOT.HEX)
 
-Current version is 1.8
+Current version is 1.9
+
+Source files were updated to allow building the system even when TPA area is small
+
