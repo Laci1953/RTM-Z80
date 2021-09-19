@@ -250,7 +250,12 @@ COND	WATSON
 	call	Snapshot		;move LOW_RAM to UP_RAM
 ENDC
 	ld	sp,(_InitialSP)		;restore initial SP
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	ret				;Interrupts still DISABLED
 ;
 ;	Forced exit from an interrupt, quitting RTM/Z80
@@ -259,7 +264,12 @@ ENDC
 RETI_RETURN:
 	call	StopHardware	;shutdown the hardware interrupt sources
 	ld	sp,(_InitialSP)	;restore initial SP
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	reti			;Interrupts remain DISABLED
 ;
 ;	memory pad used to fill the space till 100H
@@ -493,7 +503,12 @@ nothing:
 RETURN:					;return to the caller of StartUp
 	call	StopHardware		;shutdown the hardware interrupt sources
 	ld	sp,(_InitialSP)		;restore initial SP
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	ret				;Interrupts still DISABLED
 ;
 _InitInts:
@@ -554,7 +569,12 @@ StopHardware:
 RETI_RETURN:
 	call	StopHardware	;shutdown the hardware interrupt sources
 	ld	sp,(_InitialSP)	;restore initial SP
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	reti			;Interrupts remain DISABLED
 ;
 ENDC

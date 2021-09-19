@@ -9,8 +9,48 @@
 ; Its priority shall be higher than a normal task priority
 ;
 *Include config.mac
-*Include leds.mac
 
+;----------------------------------------------------------------------NOCPM
+COND    NOCPM
+;
+;---------------------------------------------------------------DIG_IO
+COND	DIG_IO
+;
+	GLOBAL	IO_LEDS
+;
+LED_PORT	equ	0
+;
+;	LED definitions - bit affected
+;
+RTMZ80		equ	0	;RTM/Z80 running
+CLOCK		equ	1	;1 second ON/OFF
+ERR_STACK	equ	2	;stack warning 
+ERR_TCB		equ	3	;wrong TCB
+ERR_SEM		equ	4	;wrong Semaphore
+ERR_FULLMEM	equ	5	;no more free memory
+ERR_ESC		equ	6	;SIO A External Status Change
+ERR_SRC		equ	7	;SIO A Special Receive Condition
+
+MACRO	OUT_LEDS	bitnr
+	ld	a,(IO_LEDS)
+	set	bitnr,a
+	ld	(IO_LEDS),a
+	out	(LED_PORT),a
+ENDM
+
+ENDC
+;---------------------------------------------------------------DIG_IO
+ENDC
+;----------------------------------------------------------------------NOCPM
+
+;
+; Serial I/O driver for interrupt-based I/O
+;
+; For the device CONSOLE
+;
+; Each I/O driver is build as a task
+; Its priority shall be higher than a normal task priority
+;
         psect   bss
 
 SIO_RP:         defs    2 ;SIO receive buffer read pointer
@@ -477,7 +517,12 @@ OFF_BUF equ     14
 _CON_Read:
 	ld	a,IO_READ	;A=I/O opcode
 _CON_IO:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 onstack:			;stack=AF,BC,DE,HL,IX,IY,retaddr,buf,len,S(,Timer)
         ld	ix,OFF_BUF
 	add	ix,sp
@@ -491,7 +536,12 @@ onstack:			;stack=AF,BC,DE,HL,IX,IY,retaddr,buf,len,S(,Timer)
 	ld	e,(ix+4)
 	ld	d,(ix+5)	;DE=Sem
         call    ReqOnStack      ;call internal I/O routine, A=I/O opcode
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
         ret
 ;
 ;       CON_Write
@@ -655,7 +705,12 @@ COND    C_LANG
 OFF_TIM	equ     20
 ;
 _ReadB:
-        PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
         ld      hl,OFF_TIM
         add     hl,sp           ;stack=AF,BC,DE,HL,IX,IY,retaddr,buf,len,S,Timer,TimeOut
         ld      e,(hl)

@@ -6,7 +6,8 @@
 *Include config.mac
 *Include romram.mac
 
-COND	NOCPM .and. RAM128K
+COND	NOCPM 
+COND	RAM128K
 
 	psect	text
 
@@ -18,6 +19,7 @@ COND	C_LANG
 	GLOBAL _UpToLow100H
 ENDC
 ENDC
+
 ;
 ;void	_LowToUp100H(void* From, void* To)
 ;	IX not affected
@@ -175,4 +177,5 @@ loop:	push	af
 ;
 ENDC
 
+ENDC
 ENDC

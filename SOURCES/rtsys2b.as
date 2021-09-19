@@ -267,9 +267,19 @@ COND	C_LANG
 ;	AF,BC,DE,HL,IX,IY not affected
 ;
 _Suspend:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	call	__Suspend
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	ret
 ENDC
 ;
@@ -341,7 +351,12 @@ COND	C_LANG
 ResTCB	equ	14
 ;
 _Resume:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,ResTCB
 	add	hl,sp		;stack=AF,BC,DE,HL,IX,IY,retaddr,TCB
 	ld	a,(hl)
@@ -368,7 +383,12 @@ _Resume:
 StopTCB	equ	14
 ;
 _StopTask:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,StopTCB
 	add	hl,sp		;stack=AF,BC,DE,HL,IX,IY,retaddr,TCB
 	ld	a,(hl)

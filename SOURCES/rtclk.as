@@ -98,7 +98,12 @@ __RoundRobinON:
 ;
 _RoundRobinOFF:
 __RoundRobinOFF:
-        PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	di
 	xor	a
 	ld	(RoundRobin),a

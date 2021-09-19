@@ -404,7 +404,12 @@ COND	C_LANG
 WQ_Q    equ     14
 ;
 _WriteQ:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
         ld      hl,WQ_Q
         add     hl,sp                   ;stack=AF,BC,DE,HL,IX,IY,retaddr,queue,info
         ld      c,(hl)
@@ -592,7 +597,12 @@ COND	C_LANG
 RQ_Q    equ     14
 ;
 _ReadQ:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
         ld      hl,RQ_Q
         add     hl,sp                   ;stack=AF,BC,DE,HL,IX,IY,retaddr,queue
         ld      c,(hl)
@@ -617,7 +627,12 @@ COND	DEBUG
 	jr	z,1f
 2:	pop	de
 	pop	bc
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	jp	RET_NULL		;return HL=0
 1:	ld	a,6			;skip ReadSem
 	add	a,l
@@ -665,7 +680,12 @@ COND	DEBUG
 	jr	z,1f
 2:	pop	de
 	pop	bc
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	jp	RET_NULL		;return HL=0
 1:	ld	a,6			;skip ReadSem
 	add	a,l

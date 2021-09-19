@@ -106,7 +106,12 @@ EOTmark: 	defs	1 	;chksum / EOT mark (not zero==EOT)
 ;	
 XM_MB	equ	14
 _XmRecv:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,XM_MB
 	add	hl,sp		;IX=SP,stack=AF,BC,DE,HL,IX,IY,retaddr,MB_Data
 	ld	a,(hl)
@@ -302,7 +307,12 @@ Drop:
 ;		get the result of XmSend
 ;
 _XmSend:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,XM_MB
 	add	hl,sp		;IX=SP,stack=AF,BC,DE,HL,IX,IY,retaddr,MB_Data
 	ld	a,(hl)

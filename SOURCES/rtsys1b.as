@@ -57,7 +57,12 @@ COND	C_LANG
 SigSem	equ	14
 ;
 _Signal:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,SigSem
 	add	hl,sp		;stack=AF,BC,DE,HL,IX,IY,retaddr,Sem addr
 	ld      a,(hl)
@@ -174,7 +179,12 @@ COND	C_LANG
 WaitSem	equ	14
 ;
 _Wait:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 COND	CPM
 lwait1:	ld	a,(CON_CrtIO)
 	cp	IO_IDLE
@@ -445,7 +455,12 @@ _ResumeTask:			;enters with di called
 COND	SIO_RING
 	call	GetSIOChars
 ENDC
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	ei
 	ret
 ;
@@ -519,6 +534,11 @@ ENDC
 COND	SIO_RING
 	call	GetSIOChars
 ENDC
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	ei
 	reti

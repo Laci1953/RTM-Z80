@@ -239,7 +239,12 @@ COND	C_LANG
 SM_MB	equ	14
 ;
 _SendMail:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,SM_MB
 	add	hl,sp		;IX=SP,stack=AF,BC,DE,HL,IX,IY,retaddr,MBox,Msg
 	ld	e,(hl)
@@ -258,7 +263,12 @@ COND	DEBUG
 	call	IsItSem
 	pop	de
 	jr	z,1f
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	jp	EI_RET_NULL			;return HL=0
 1:
 ENDC
@@ -360,7 +370,12 @@ COND	C_LANG
 GM_MB	equ	14
 ;
 _GetMail:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,GM_MB
 	add	hl,sp		;stack=AF,BC,DE,HL,IX,IY,retaddr,MBox,Buffer
 	ld	e,(hl)
@@ -378,13 +393,23 @@ COND	DEBUG
 	call	IsItSem
 	pop	de
 	jr	z,1f
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	jp	RET_NULL
 1:
 ENDC
 ;										DEBUG
 	call	QuickGetMail
-	POP_ALL_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
 	ret
 ENDC
 ;

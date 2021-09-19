@@ -88,7 +88,12 @@ ENDC
 ;	return HL=task TCB or 0 if alloc failed
 ;
 __StartUp:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 SavePars:
 ;				DIG_IO
 COND	DIG_IO
@@ -257,7 +262,12 @@ COND	C_LANG
 OFF_TCB_SIZE	equ	14
 ;
 _StartUp:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,OFF_TCB_SIZE
 	add	hl,sp		;stack=AF,BC,DE,HL,IX,IY,retaddr,params
 	ld	c,(hl)
@@ -280,7 +290,12 @@ _StartUp:
 ;	return HL=task TCB and Z=0 or HL=0 and Z=1 if alloc failed
 ;
 _RunTask:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,OFF_TCB_SIZE
 	add	hl,sp		;stack=AF,BC,DE,HL,IX,IY,retaddr,params
 	ld	c,(hl)
@@ -490,7 +505,12 @@ ENDC
 SET_PRI_TCB	equ	14
 ;
 _SetTaskPrio:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 	ld	hl,SET_PRI_TCB
 	add	hl,sp
 	ld	c,(hl)
@@ -504,7 +524,12 @@ _SetTaskPrio:
 ;	BC=TCB, E=Prio
 ;
 __SetTaskPrio:
-	PUSH_ALL_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
 setpri:	
 	di
 COND	DEBUG
