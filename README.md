@@ -9,5 +9,5 @@ DEMO/HEX/SC108 contains a demo application, to be run on RC2014 SC108 (using RES
 
 Current version is 1.9
 
-Source files were updated to allow building the system even when TPA area is small
+Source files were updated to allow building the system on RC2014's CP/M even when TPA area is small
 
