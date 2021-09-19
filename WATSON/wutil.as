@@ -3,6 +3,54 @@
 ;
 *Include w.mac
 ;
+;-----------------------------------------------------------------------1-MM
+COND	1-MM
+
+MEMP_PORT       equ     38H
+;
+ROMOUT          equ     00000001B
+ROMIN           equ     00000000B
+LOWER_64RAM     equ     00000000B
+UPPER_64RAM     equ     10000000B
+
+MACRO	LOW_RAM
+	ld	a,LOWER_64RAM .or. ROMOUT
+	out	(MEMP_PORT),a
+ENDM
+
+MACRO	UP_RAM
+	ld	a,UPPER_64RAM .or. ROMOUT
+	out	(MEMP_PORT),a	
+ENDM
+
+ENDC
+;-----------------------------------------------------------------------1-MM
+;-----------------------------------------------------------------------MM
+COND	MM
+
+MM_RAM_P	equ	30H
+
+MM_UP_RAM	equ	1
+MM_LOW_RAM	equ	0
+
+MACRO	LOW_RAM
+	ld	a,MM_LOW_RAM
+	out	(MM_RAM_P),a
+ENDM
+
+MACRO	UP_RAM
+	ld	a,MM_UP_RAM
+	out	(MM_RAM_P),a
+ENDM
+
+MM_ROM_P	equ	38H
+
+MM_ROM_IN	equ	0
+MM_ROM_OUT	equ	1
+
+ENDC
+;-----------------------------------------------------------------------MM
+
         psect   text
 ;
 	GLOBAL	TypeChar,ReadChar
@@ -152,11 +200,21 @@ TypeA:
         ld      a,d
         call    NibbleToASCII
                                 ;type High Nibble to console
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         ld      a,e
         call    NibbleToASCII
                                 ;type Low Nibble to console
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         pop     de
         ret
 ;
@@ -171,7 +229,12 @@ TypeString:
         ld      a,(hl)
         or      a
         ret     z
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         inc     hl
         jr      TypeString
 ;
@@ -242,12 +305,28 @@ ReadLine:
         ld      (RepeatCmd),a   ;reset repeat!
         jr      z,1f
                                 ;yes, now see if it's a <CR>
-        INCHAR
+COND    1-CPM
+        call	ReadChar
+ENDC
+COND    CPM
+7:	in	a,(0)
+	or	a
+	jr	z,7b
+	in	a,(1)
+ENDC
         cp      CR
         ret     z               ;yes, it's a <CR>, return
         jp      2f
 1:                              ;read char
-        INCHAR
+COND    1-CPM
+        call	ReadChar
+ENDC
+COND    CPM
+7:	in	a,(0)
+	or	a
+	jr	z,7b
+	in	a,(1)
+ENDC
 2:      ld      (hl),a          ;store-it
         cp      CR              ;CR?
         ret     z               ;if CR, do not output-it, just return
@@ -269,7 +348,12 @@ ENDC
 2:
         inc     hl              ;increment pointer
                                 ;type char
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         djnz    1b
         ret
 ;

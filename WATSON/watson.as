@@ -17,6 +17,45 @@
 ;
 ;
 *Include w.mac
+
+;-----------------------------------------------------------------------1-MM
+COND	1-MM
+
+MEMP_PORT       equ     38H
+;
+ROMOUT          equ     00000001B
+ROMIN           equ     00000000B
+LOWER_64RAM     equ     00000000B
+UPPER_64RAM     equ     10000000B
+
+MACRO	ROM_IN
+	xor	a
+	out	(MEMP_PORT),a
+ENDM
+
+ENDC
+;-----------------------------------------------------------------------1-MM
+;-----------------------------------------------------------------------MM
+COND	MM
+
+MM_RAM_P	equ	30H
+
+MM_UP_RAM	equ	1
+MM_LOW_RAM	equ	0
+
+MM_ROM_P	equ	38H
+
+MM_ROM_IN	equ	0
+MM_ROM_OUT	equ	1
+
+MACRO	ROM_IN
+	ld	a,MM_ROM_IN
+	out	(MM_ROM_P),a
+ENDM
+
+ENDC
+;-----------------------------------------------------------------------MM
+
 ;
 	GLOBAL	TypeChar,ReadChar
         GLOBAL  wReadA
@@ -119,8 +158,9 @@ COND	1-CPM
 COND	1-MM
 	ROM_IN
 COND	1-ROM
-        xor     a
-        SCMF    RESET                   ;SCM cold reset
+        xor     a	;SCM cold reset
+        ld      c,RESET
+        rst     30H
 ENDC
 COND	ROM
 	jp	0
@@ -157,7 +197,12 @@ loop:   ld      hl,msgPrompt            ;print CR,LF,':'
         jr      z,1f
                                         ;command not found
         ld      a,'?'                   ;type '?'
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         jr      loop
 1:
         ld      bc,loop                 ;return address = loop
@@ -272,7 +317,12 @@ linesloop:
                                 ;print 16 bytes in hexa
 bytesloop:
         ld      a,BLANK         ;print BLANK
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         ld      a,(hl)          ;get byte
         call    TypeA           ;print-it in hexa
         inc     de
@@ -289,12 +339,22 @@ bytesloop:
         call    DEtoHL          ;Verify and Adjust-it, no need to check CARRY (already done)
         pop     bc
         ld      a,BLANK         ;print BLANK
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         ld      c,10H
 asciiloop:
         ld      a,(hl)          ;get byte
         call    FilterChar      ;make-it printable
-        OUTCHAR                 ;print-it
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         inc     de
         push    bc
         call    DEtoHL          ;Verify and Adjust-it, no need to check CARRY (already done)
@@ -382,7 +442,12 @@ SemDisplay:
         jp      nz,SyntaxErr    ;it's not a TCB
                                 ;it is a TCB, print its address
         ld      a,BLANK
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         call    TypeBC          ;print DE=next in hexa
         ld      d,b
         ld      e,c             ;DE=crt
@@ -533,7 +598,12 @@ NxTCB:  call    DEtoHL          ;CARRY=0
         ld      h,d             ;HL=DE=next
         add     hl,bc           ;HL=next+offset
         ld      a,BLANK
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         call    TypeHL          ;print TCB
         jr      NxTCB
 ;
@@ -554,7 +624,12 @@ CrtTCBDisplay:
         inc     hl              ;no need to verify and adjust!
         ld      b,(hl)          ;BC=TCB of Current Active Task
         ld      a,BLANK         ;type a blank
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         jp      TypeBC          ;print BC=TCB in hexa
 ;
 ;       Display Dynamic Memory status
@@ -612,9 +687,19 @@ DynMemDisplay:
         ld      b,(ix-3)        ;BC=block size
         call    TypeBC          ;print crt block size
         ld      a,':'
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
 2:      ld      a,BLANK
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         call    TypeDE          ;print block addr
         ld      c,(ix-4)
         ld      b,(ix-3)        ;BC=block size
@@ -804,7 +889,12 @@ MBDisplay:
         jp      nz,SyntaxErr    ;it's not a TCB
                                 ;it is a TCB, print its address
         ld      a,BLANK
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         call    TypeBC          ;print DE=next in hexa
         ld      d,b
         ld      e,c             ;DE=crt
@@ -833,7 +923,12 @@ MBDisplay:
         sbc     hl,bc           ;is crt == header ?
         jr      z,4f            ;if yes, go print msg size
         ld      a,BLANK
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         call    TypeBC          ;print BC=next in hexa
         ld      d,b
         ld      e,c             ;DE=crt
@@ -969,7 +1064,12 @@ findto: ld      a,(hl)          ;check if '(to AAAA' is present
         ld      b,(hl)          ;B=counter
 3:      inc     hl
         ld      a,(hl)
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         djnz    3b
         pop     de              ;DE=crt PC
         pop     af              ;A=instr size
@@ -1045,8 +1145,9 @@ COND	1-CPM
 COND	1-MM
 	ROM_IN
 COND	1-ROM
-        xor     a
-        SCMF    RESET                   ;SCM cold reset
+        xor     a	;SCM cold reset
+        ld      c,RESET
+        rst     30H
 ENDC
 COND	ROM
 	jp	0
@@ -1068,7 +1169,12 @@ Help:   ld      hl,msgHelp
 SyntaxErr:
         ld      sp,ix                   ;restore SP
         ld      a,'?'                   ;type ?
-        OUTCHAR
+COND    1-CPM
+        call	TypeChar
+ENDC
+COND    CPM
+	out	(1),a
+ENDC
         ret
 ;
 ;       Return from command
