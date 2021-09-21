@@ -121,7 +121,8 @@ Breakpoint:
 	push	bc
 	push	af
 	ld	sp,TCB_Dummy		;move SP to a neutral area
-	call	StopHardware		;shutdown the hardware interrupt sources		call	Snapshot		;take a snapshot
+	call	StopHardware		;shutdown the hardware interrupt sources	
+	call	Snapshot		;take a snapshot
 	jr	STOP			;stop and return to SCM
 ;
 ENDC
