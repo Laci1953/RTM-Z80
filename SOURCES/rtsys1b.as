@@ -31,7 +31,7 @@ ENDC
 ;
 MAX_TASKS_NR	equ	32	;tasks number limit
 
-COND	CPM
+COND	SIM
 	GLOBAL CON_CrtIO,_CON_TX,_CON_RX
 ENDC
 COND	C_LANG
@@ -185,7 +185,7 @@ _Wait:
 	push	bc
 	push	ix
 	push	iy
-COND	CPM
+COND	SIM
 lwait1:	ld	a,(CON_CrtIO)
 	cp	IO_IDLE
 	jr	z,nowait1
@@ -239,7 +239,7 @@ ENDC
 ;	return CARRY=1 if wrong semaphore address provided, else CARRY=0
 ;
 __Wait:
-COND	CPM
+COND	SIM
 lwait:	ld	a,(CON_CrtIO)
 	cp	IO_IDLE
 	jr	z,nowait

@@ -227,10 +227,10 @@ ClearAllGarbage:
 	ret				;return Z=0
 1:
 	ld	ix,BMEM_BASE		;IX=pointer of dynamic memory
-COND	CPM
+COND	SIM
 	ld	iy,BMEM_BASE+BMEM_SIZE	;IY=pointer to end of dynamic memory
 ENDC
-COND	NOCPM
+COND	NOSIM
 	ld	iy,0			;IY=pointer to end of dynamic memory (0FFFFH + 1)
 ENDC
 	call	ClearGarbage		;clear garbage (uses ~ 10H stack space)
@@ -655,7 +655,7 @@ COND	DEBUG
 	pop	de		;DE=block addr
 	jr	c,9f		;return 0 if address < BMEM_BASE
 				;CARRY=0
-COND	CPM
+COND	SIM
 	ld	hl,BMEM_BASE+BMEM_SIZE
 	sbc	hl,de
 	jr	c,9f		;return 0 if address > BMEM_BASE+BMEM_SIZE
@@ -856,7 +856,7 @@ COND	DEBUG
 9:	xor	a		;Z=1
 	jp	RET_NULL	;return 0 if address < BMEM_BASE
 1:				;CARRY=0
-COND	CPM
+COND	SIM
 	ld	hl,BMEM_BASE+BMEM_SIZE
 	sbc	hl,de
 	jr	c,9b

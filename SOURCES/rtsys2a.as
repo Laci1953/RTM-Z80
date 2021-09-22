@@ -43,11 +43,11 @@ COND	CMD
 ENDC
 
 
-COND	NOCPM
+COND	NOSIM
 	GLOBAL	SIO_buf
 ENDC
 
-COND	CPM
+COND	SIM
 SIO_buf         equ     7E00H
 ENDC
 
@@ -73,7 +73,7 @@ ENDC
 	GLOBAL TCB_Default,TCB_Dummy
 	GLOBAL pLists,def_sp,DefSP,def_sem,DefaultStart
 	GLOBAL CON_Driver_TCB,CMD_TCB,PrioMask,TasksCount,IdCnt
-COND	NOCPM
+COND	NOSIM
 	GLOBAL CleanReqB,CleanRP
 COND	DEBUG
 	GLOBAL tmpbuf
@@ -108,8 +108,8 @@ ENDC
 	call	_InitInts	;init interrupts
 				;interrupts are disabled now (DI)
 				;set-up kernel data
-;										NOCPM
-COND	NOCPM
+;										NOSIM
+COND	NOSIM
 	ld	bc,CleanReqB
 	ld	hl,CleanRP
 	ld	(hl),c
@@ -140,7 +140,7 @@ COND	DEBUG
 	ld	(hl),a
 ENDC
 ENDC
-;										NOCPM
+;										NOSIM
 	ld	a,TICS_PER_SEC
 	ld	(SecondCnt),a
 	ld	hl,SIO_buf

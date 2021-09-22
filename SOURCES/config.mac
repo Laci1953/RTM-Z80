@@ -4,7 +4,7 @@
 ;	RTM/Z80 system configuration settings
 ;
 DEBUG		equ 1	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
-CPM		equ 1	;1=Runs under CP/M, 0=Runs on RC2014(SC108+SC110)
+SIM		equ 1	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
 DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
 CMD		equ 0	;1=CON CMD task is included
 RSTS		equ 0	;1=use RST for list routines (not for CP/M)
@@ -13,7 +13,7 @@ C_LANG		equ 1	;1=Support for C language API
 IO_COMM		equ 0	;1=Support for async communications I/O
 MM		equ 0	;1=Memory Module is used, 0=SC108 is used
 ;
-;	ROM/RAM options (only if CPM=0)
+;	ROM/RAM options (only if SIM=0)
 ;
 RAM128K		equ 0	;0=only 64K RAM, 1= 2 x 64K RAM available
 ROM		equ 0	;1=sys code on ROM, 0=ROM not used
@@ -23,11 +23,11 @@ Z80SIM_CHECK    equ 0   ;1=check if CP/M executed on Z80SIM
 ;
 BDOS		equ 1	;1=BDOS disk file support
 ;
-;	WARNING : if CPM=0 and WATSON=1 ==> RAM128 must be set to 1
+;	WARNING : if SIM=0 and WATSON=1 ==> RAM128 must be set to 1
 ;		(on RC2014, Watson needs 128 KB RAM)
 ;
 NODEBUG		equ	1-DEBUG	
-NOCPM		equ	1-CPM
+NOSIM		equ	1-SIM
 NODIG_IO	equ	1-DIG_IO
 NOCMD		equ	1-CMD
 NORSTS		equ	1-RSTS
@@ -40,7 +40,7 @@ NOBOOT_CODE	equ	1-BOOT_CODE
 NORAM128K	equ	1-RAM128K
 NOBDOS		equ	1-BDOS
 ;
-SIO_RING	equ	NOCPM .and. IO_COMM
+SIO_RING	equ	NOSIM .and. IO_COMM
 NOSIO_RING	equ	1-SIO_RING
 ;
 ;TRIGGERS	equ 0	;Digital I/O module triggers: 1=ON,0=OFF (in this version, MUST BE SET to 0)
@@ -100,10 +100,10 @@ BMEM_SIZE	equ	2000H
 
 B_H_SIZE	equ	6	;sizeof(bElement)
 
-COND	CPM
+COND	SIM
 BMEM_BASE	equ	08000H	;MUST be multiple of 0x2000
 ENDC
-COND	NOCPM
+COND	NOSIM
 BMEM_BASE	equ	0E000H	;MUST be multiple of 0x2000 
 ENDC
 
@@ -111,8 +111,8 @@ COND	ROM
 _main	equ	2800H		;User code starts at 2800H
 ENDC
 
-;					CPM
-COND	CPM
+;					SIM
+COND	SIM
 
 MACRO	SET_LEDS	value
 ENDM
@@ -126,13 +126,13 @@ ENDM
 ;MACRO	TEST_TRIGGER	bitnr
 ;ENDM
 
-;					CPM
+;					SIM
 ENDC
 
-COND	CPM
+COND	SIM
 TICS_PER_SEC	equ	100
 ENDC
-COND	NOCPM
+COND	NOSIM
 TICS_PER_SEC	equ	200
 ENDC
 

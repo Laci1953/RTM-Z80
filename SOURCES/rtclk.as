@@ -82,7 +82,7 @@ ENDC
 COND	DEBUG
 	GLOBAL	IsItSem
 ENDC
-COND    NOCPM 
+COND    NOSIM 
 COND	DIG_IO .and. WATSON
         GLOBAL Snapshot
 ENDC
@@ -578,8 +578,8 @@ COND    DIG_IO
 ;ENDC
 ;ENDC
 ;-----------------------------------------------------------DEBUG
-;-----------------------------------------------------------NOCPM
-;COND    NOCPM
+;-----------------------------------------------------------NOSIM
+;COND    NOSIM
 ;COND	TRIGGERS .and. WATSON
 ;        TEST_TRIGGER    SNAPSHOT
 ;        jr      z,timers
@@ -588,7 +588,7 @@ COND    DIG_IO
 ;        jp      RETI_RETURN     ;and shutdown
 ;ENDC
 ;ENDC
-;-----------------------------------------------------------NOCPM
+;-----------------------------------------------------------NOSIM
 ENDC
 ;---------------------------------------------------------------------------DIG_IO
 timers:

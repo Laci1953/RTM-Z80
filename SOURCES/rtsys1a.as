@@ -30,8 +30,8 @@ SYS_TASKS_NR	equ	2	;Default task + CON driver
 ENDC
 ;
 MAX_TASKS_NR	equ	32	;tasks number limit
-;										NOCPM
-COND	NOCPM
+;										NOSIM
+COND	NOSIM
 CODE_BASE:			;at 0000H
 COND	ROM
 COND	BOOT_CODE
@@ -425,19 +425,19 @@ ENDC
 	psect	text
 
 ENDC
-;										NOCPM
-;										CPM
-COND	CPM
-*Include cpmdata.as
+;										NOSIM
+;										SIM
+COND	SIM
+*Include simdata.as
 ENDC
-;										CPM
+;										SIM
 	GLOBAL	RET_NULL,EI_RET_NULL,EI_RET_FFFF
 	GLOBAL	Lists,L9,L0,Buddy
 	GLOBAL	CON_IO_Wait_Sem,CON_IO_Req_Q,CON_IO_WP,CON_IO_RP
 	GLOBAL	CON_IO_BS,CON_IO_BE,CON_IO_RS,CON_IO_WS
 	GLOBAL	RETURN,RETI_RETURN
-;										NOCPM
-COND	NOCPM
+;										NOSIM
+COND	NOSIM
 COND	WATSON
 	GLOBAL  Snapshot
 ENDC
@@ -447,7 +447,7 @@ ENDC
 	GLOBAL	_CON_ESC,_CON_SRC
 	GLOBAL	SIO_buf
 ENDC
-;										NOCPM
+;										NOSIM
 COND	C_LANG
 	GLOBAL _GetHost
 	GLOBAL _GetSemSts,_MakeSem,_DropSem,_Wait,_ResetSem
@@ -471,7 +471,7 @@ ENDC
 	GLOBAL TCB_Default,TCB_Dummy
 	GLOBAL pLists,def_sp,DefSP,def_sem,DefaultStart
 	GLOBAL CON_Driver_TCB,CMD_TCB,PrioMask,TasksCount,IdCnt
-COND	NOCPM
+COND	NOSIM
 	GLOBAL CleanReqB
 ENDC
 COND	DEBUG
@@ -481,8 +481,8 @@ COND	BDOS
 	GLOBAL BDOS_Sem
 ENDC
 
-;									CPM
-COND	CPM
+;									SIM
+COND	SIM
 ;
 ;	Default task
 ;
@@ -579,7 +579,7 @@ RETI_RETURN:
 	reti			;Interrupts remain DISABLED
 ;
 ENDC
-;									CPM
+;									SIM
 ;	Get Current TCB ID
 ;
 ;	returns A=TCB_ID
@@ -596,16 +596,16 @@ _GetID:
 ;
 ;	Get Host 
 ;
-;	returns HL=0 : CPM , HL=1 : RC2014
+;	returns HL=0 : Z80SIM , HL=1 : RC2014
 ;
 COND	C_LANG
 _GetHost:
 ENDC
 __GetHost:
-COND	CPM
+COND	SIM
 	ld	hl,0
 ENDC
-COND	NOCPM
+COND	NOSIM
 	ld	hl,1
 ENDC
 	ret

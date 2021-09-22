@@ -18,12 +18,12 @@ COND	IO_COMM
 
 	psect	text
 
-COND	CPM
+COND	SIM
 RawBuf1	equ	7B01H	;buffer #1 used for RawRead
 RawBuf2	equ	7C01H	;buffer #2 used for RawRead
 ENDC
 
-COND	CPM=0
+COND	NOSIM
 RawBuf1	equ	0D201H	;buffer #1 used for RawRead
 RawBuf2	equ	0D301H	;buffer #2 used for RawRead
 ENDC
@@ -246,7 +246,7 @@ allread:
 ;	registers not affected (except AF)
 ;
 GetByte:
-COND	CPM
+COND	SIM
 	GLOBAL	CON_CrtIO,CON_Count,_CON_RX
 	ld	a,(CON_CrtIO)
 	cp	IO_RAW_READ

@@ -6,7 +6,7 @@
 *Include config.mac
 *Include romram.mac
 
-COND	NOCPM 
+COND	NOSIM 
 COND	RAM128K
 
 	psect	text

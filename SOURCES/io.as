@@ -10,8 +10,8 @@
 ;
 *Include config.mac
 
-;----------------------------------------------------------------------NOCPM
-COND    NOCPM
+;----------------------------------------------------------------------NOSIM
+COND    NOSIM
 ;
 ;---------------------------------------------------------------DIG_IO
 COND	DIG_IO
@@ -41,7 +41,7 @@ ENDM
 ENDC
 ;---------------------------------------------------------------DIG_IO
 ENDC
-;----------------------------------------------------------------------NOCPM
+;----------------------------------------------------------------------NOSIM
 
 ;
 ; Serial I/O driver for interrupt-based I/O
@@ -58,11 +58,11 @@ SIO_WP:         defs    2 ;SIO receive buffer write pointer
 ;
 ;       SIO receive buffer
 ;
-COND	CPM
+COND	SIM
 SIO_buf         equ     7E00H
 ENDC
 
-COND	NOCPM
+COND	NOSIM
 
 	GLOBAL	SIO_buf
 
@@ -143,7 +143,7 @@ LogMsg:         defb    0dh,0ah         ;Login message
 		defb	'0'+V_m
 LogLen	equ	$-LogMsg
 ;
-COND	NOCPM
+COND	NOSIM
         GLOBAL  _CON_ESC
         GLOBAL  _CON_SRC
 ENDC
@@ -245,10 +245,10 @@ ENDC
         ld      a,(hl)
         inc     hl              ;increment pointer
         ld      (CON_Buf),hl
-COND    NOCPM
+COND    NOSIM
         out     (SIO_A_D),a     ;write-it
 ENDC
-COND    CPM
+COND    SIM
         out     (1),a
 ENDC
         ld      hl,CON_Count    ;decrement count
@@ -270,13 +270,13 @@ rawreadop:                      ;it's a IO_RAW_READ
 	ld	hl,(SIO_RP)	;HL=SIO buf read pointer
 	ld	bc,(CON_Buf)	;BC=user buf pointer
 loopav:				;check if other chars available
-COND	NOCPM
+COND	NOSIM
         in      a,(SIO_A_C)     ;read RR0
         rrca                    ;char available?
         jr     	nc,nochar       ;no, continue loop
         in      a,(SIO_A_D)     ;yes, read char
 ENDC
-COND    CPM
+COND    SIM
         in      a,(0)
         or      a               ;char available?
         jr	z,nochar	;no, continue loop
@@ -342,13 +342,13 @@ COND	IO_COMM
 	ld	hl,(SIO_RP)	;HL=SIO buf read pointer
 	ld	bc,(CON_Buf)	;BC=user buf pointer
 looptmo:			;check if other chars available
-COND	NOCPM
+COND	NOSIM
         in      a,(SIO_A_C)     ;read RR0
         rrca                    ;char available?
         jr     	nc,nochtmo      ;no, continue loop
         in      a,(SIO_A_D)     ;yes, read char
 ENDC
-COND    CPM
+COND    SIM
         in      a,(0)
         or      a               ;char available?
         jr	z,nochtmo	;no, continue loop
@@ -489,7 +489,7 @@ ENDC
 __CTRL_C:
 	ld	a,(CTRL_C_flag)
 	ld	l,a
-COND	CPM
+COND	SIM
         in      a,(0)
         or      a               ;char available?
         jr	z,1f
@@ -684,7 +684,7 @@ __Reset_RWB:
         ld      hl,SIO_buf
         ld      (SIO_RP),hl
         ld      (SIO_WP),hl
-COND	NOCPM
+COND	NOSIM
 	xor	a
 	ld	(RR1),a
 ENDC
@@ -780,7 +780,7 @@ ENDC
 ;               or      a               ;check # NOT read
 ;
 __GetCountB:
-COND	NOCPM
+COND	NOSIM
 	ld	a,(RR1)		;error code
 	ld	h,a		;in H
 ENDC
@@ -795,7 +795,7 @@ ENDC
 ;       SIO_A transmit buffer empty
 ;
 _CON_TX:
-COND    CPM
+COND    SIM
         di
 ENDC
         push    af              ;save only AF
@@ -811,10 +811,10 @@ ENDC
 	jr	nz,2f
 				;it was echo step 1
 	ld	a,BLANK		;write a BLANK
-COND    NOCPM
+COND    NOSIM
         out     (SIO_A_D),a    
 ENDC
-COND    CPM
+COND    SIM
         out     (1),a
 ENDC
 	ld	a,2
@@ -822,10 +822,10 @@ ENDC
 	jr	rettx
 2:				;it was echo step 2
 	ld	a,BACKSPACE	;write a backspace
-COND    NOCPM
+COND    NOSIM
         out     (SIO_A_D),a    
 ENDC
-COND    CPM
+COND    SIM
         out     (1),a
 ENDC
 	xor	a
@@ -833,17 +833,17 @@ ENDC
 	jr	rettx
 ;
 resettx:
-COND    NOCPM
+COND    NOSIM
         ld      a,00101000B     ;RR0 Reset Transmitter Interrupt Pending
         out     (SIO_A_C),a
 ENDC
 rettx:
         pop     af              ;restore AF
-COND    NOCPM
+COND    NOSIM
         ei
         reti
 ENDC
-COND    CPM
+COND    SIM
         ei
         ret
 ENDC
@@ -860,24 +860,24 @@ write:                          ;it's a write
         ld      a,(hl)
         inc     hl              ;increment pointer
         ld      (CON_Buf),hl
-COND    NOCPM
+COND    NOSIM
         out     (SIO_A_D),a     ;write-it
 ENDC
-COND    CPM
+COND    SIM
         out     (1),a
 ENDC
         pop     hl              ;restore AF,HL
         pop     af
-COND    NOCPM
+COND    NOSIM
         ei
         reti
 ENDC
-COND    CPM
+COND    SIM
         ei
         ret
 ENDC
 endwrite:                       ;no more chars to write
-COND    NOCPM
+COND    NOSIM
         ld      a,00101000B     ;RR0 Reset Transmitter Interrupt Pending
         out     (SIO_A_C),a
 ENDC
@@ -890,21 +890,21 @@ ENDC
         ld      (CON_CrtIO),a   ;set IO_IDLE
         ld      hl,CON_IO_Wait_Sem
         call    QuickSignal     ;Signal local I/O completion
-COND    NOCPM
+COND    NOSIM
         jp      _ReschINT       ;then reschedule
 ENDC
-COND    CPM
+COND    SIM
         jp      _Reschedule
 ENDC
 ;
 ;       SIO_A receive character available
 ;
 _CON_RX:
-COND    CPM
+COND    SIM
         di
 ENDC
         push    af              ;save AF
-COND    CPM
+COND    SIM
         in      a,(0)
         or      a               ;char available?
         jr      nz,1f
@@ -923,10 +923,10 @@ ENDC
 	cp	IO_WRITE
 	jp	nz,idleorw	;it's IO_IDLE or IO_RAW_WRITE
 				;it's IO_WRITE, ignore char
-COND    NOCPM
+COND    NOSIM
         in      a,(SIO_A_D)     ;get A=char
 ENDC
-COND	CPM
+COND	SIM
         in      a,(1)           ;get A=char
 ENDC
 	cp	CTRL_C
@@ -936,10 +936,10 @@ ENDC
 	jp	retrxa		;return from int
 ;										IO_READ
 read:                         	;it's a read
-COND    NOCPM
+COND    NOSIM
         in      a,(SIO_A_D)     ;get A=char
 ENDC
-COND	CPM
+COND	SIM
         in      a,(1)           ;get A=char
 ENDC
         push    hl              ;save HL
@@ -950,10 +950,10 @@ ENDC
         jr      storecnt
 noCR:
 	ld	hl,ReadCnt	;set HL=pointer of nr. of read chars
-COND	CPM
+COND	SIM
 	cp	DELETE
 ENDC
-COND	NOCPM
+COND	NOSIM
 	cp	BACKSPACE
 ENDC
 	jr	z,backspace
@@ -961,10 +961,10 @@ ENDC
 	jr	c,retrxh	;ignore all "special" chars
 				;echo back char
 	inc	(hl)		;increment nr. of read chars
-COND    NOCPM
+COND    NOSIM
         out     (SIO_A_D),a     ;echo back char
 ENDC
-COND    CPM
+COND    SIM
         out     (1),a
 ENDC
                                 ;store A=char
@@ -981,11 +981,11 @@ retrxh:
 	pop     hl              ;restore HL
 retrxa:
         pop     af              ;restore AF
-COND    NOCPM
+COND    NOSIM
         ei
         reti
 ENDC
-COND    CPM
+COND    SIM
         ei
         ret
 ENDC
@@ -1000,10 +1000,10 @@ endread:
         ld      (CON_CrtIO),a   ;set IO_IDLE
         ld      hl,CON_IO_Wait_Sem
         call    QuickSignal     ;Signal local I/O completion
-COND    NOCPM
+COND    NOSIM
         jp      _ReschINT       ;then reschedule
 ENDC
-COND    CPM
+COND    SIM
         jp      _Reschedule
 ENDC
 backspace:			;it's a BACKSPACE
@@ -1021,10 +1021,10 @@ backspace:			;it's a BACKSPACE
 	ld	hl,CON_Count
 	inc	(hl)		;increment counter
 	ld	a,BACKSPACE
-COND    NOCPM
+COND    NOSIM
         out     (SIO_A_D),a     ;echo back BACKSPACE
 ENDC
-COND    CPM
+COND    SIM
         out     (1),a
 ENDC
 	jr	retrxh
@@ -1032,10 +1032,10 @@ ENDC
 COND	IO_COMM
 ;										IO_RAW_READ
 rawrd:  			;it's a raw read
-COND    NOCPM
+COND    NOSIM
         in      a,(SIO_A_D)     ;get A=char
 ENDC
-COND	CPM
+COND	SIM
         in      a,(1)           ;get A=char
 ENDC
         push    hl              ;save HL
@@ -1047,13 +1047,13 @@ ENDC
         ld      (de),a		;store char to SIO buf
         inc     e               ;increment pointer in buf
 rlp:				;check if other char available
-COND	NOCPM
+COND	NOSIM
         in      a,(SIO_A_C)     ;read RR0
         rrca                    ;char available?
         jr     	nc,noch       	;no, continue loop
         in      a,(SIO_A_D)     ;yes, read char
 ENDC
-COND    CPM
+COND    SIM
         in      a,(0)
         or      a               ;char available?
         jr	z,noch		;no, continue loop
@@ -1082,11 +1082,11 @@ noch:
 	pop	de
 	pop     hl
         pop     af
-COND    NOCPM
+COND    NOSIM
         ei
         reti
 ENDC
-COND    CPM
+COND    SIM
         ei
         ret
 ENDC
@@ -1102,10 +1102,10 @@ endrr:				;read ended
 	ld	(CON_CountS),a	;set counter=0
         ld      hl,CON_IO_Wait_Sem
         call    QuickSignal     ;Signal local I/O completion
-COND    NOCPM
+COND    NOSIM
         jp      _ReschINT       ;then reschedule
 ENDC
-COND    CPM
+COND    SIM
         jp      _Reschedule
 ENDC
 
@@ -1114,10 +1114,10 @@ ENDC
 ;										IO_IDLE or IO_RAW_WRITE
 idleorw:
 	or	a		;is it IO_IDLE ?
-COND    NOCPM
+COND    NOSIM
         in      a,(SIO_A_D)     ;get A=char
 ENDC
-COND	CPM
+COND	SIM
         in      a,(1)           ;get A=char
 ENDC
 	jr	nz,1f	
@@ -1134,20 +1134,20 @@ ilp:
         inc     l               ;increment pointer
         ld      (SIO_WP),hl     ;save back pointer
 				;check if another char ready
-COND    NOCPM
+COND    NOSIM
         in      a,(SIO_A_C)     ;RR0
         rrca
         jp      nc,retrxh       ;no, return from int
 ENDC
-COND    CPM
+COND    SIM
         in      a,(0)
         or      a               ;char available?
         jp      z,retrxh        ;no, return from int
 ENDC
 	jr	ilp		;keep looping
 ;
-;                                               			NOCPM
-COND    NOCPM
+;                                               			NOSIM
+COND    NOSIM
 ;
 ;       SIO_A external/status change
 ;
@@ -1185,7 +1185,7 @@ ENDC
         reti
 ;
 ENDC
-;                                               			NOCPM
+;                                               			NOSIM
 
 ;-------------------------------------------------------------------------------SIO_RING
 COND	SIO_RING

@@ -220,10 +220,10 @@ bigloop:
 	inc	l
 	ld	b,(hl)		;BC=size of block
 	add	ix,bc		;IX=IX+BC
-COND	CPM
+COND	SIM
 	ld	hl,BMEM_BASE+BMEM_SIZE
 ENDC
-COND	NOCPM
+COND	NOSIM
 	ld	hl,0
 ENDC
 	push	ix
@@ -319,10 +319,10 @@ loopsts:
 	jr	z,quitb		;end-of-buffer reached, quit filling
 nxtblk:
 	add	ix,bc		;IX=next block or end-of-dynamic-memory
-COND	CPM
+COND	SIM
 	ld	hl,BMEM_BASE+BMEM_SIZE
 ENDC
-COND	NOCPM
+COND	NOSIM
 	ld	hl,0
 ENDC
 	push	ix

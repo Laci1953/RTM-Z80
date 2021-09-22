@@ -2,7 +2,7 @@
 ;	Copyright (C) 2021 by Ladislau Szilagyi
 ;
 ;*****************************************************************************
-;XR - Xmodem for Z80 CP/M 2.2 using CON:
+; Xmodem for Z80 CP/M 2.2 using CON:
 ;Copyright 2017 Mats Engstrom, SmallRoomLabs
 ;
 ;Licensed under the MIT license
