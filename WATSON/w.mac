@@ -1,7 +1,7 @@
 ;
 ;	Copyright (C) 2021 by Ladislau Szilagyi
 ;
-CPM	equ     0       ;1=CPM, 0=RC2014
+SIM	equ     0       ;1=Z80SIM, 0=RC2014
 MM	equ	0	;1=Memory Module, 0=SC108
 ROM	equ	0	;1=stored in ROM	
 ;
@@ -49,10 +49,10 @@ _REGS	equ	0DFE8H
 ;
 ;	Pointers of RTM/Z80 sys data
 ;
-COND	1-CPM
+COND	1-SIM
 W_P	equ	0D400H
 ENDC
-COND	CPM
+COND	SIM
 W_P	equ	7F00H
 ENDC
 ;

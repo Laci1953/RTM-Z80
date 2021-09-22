@@ -91,7 +91,7 @@ ENDC
         GLOBAL  StoreDE
         GLOBAL  CheckPC
 	GLOBAL	GetTaskByID
-COND	CPM=0
+COND	SIM=0
 	GLOBAL	$FFBC,$FFEB
 ENDC
 ;
@@ -120,7 +120,7 @@ DEtoHL:
         ld      h,d
         ld      l,e             ;HL=addr
         or      a               ;CARRY=0
-COND    CPM
+COND    SIM
         ret
 ENDC
         push    hl              ;save HL=addr
@@ -200,19 +200,19 @@ TypeA:
         ld      a,d
         call    NibbleToASCII
                                 ;type High Nibble to console
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         ld      a,e
         call    NibbleToASCII
                                 ;type Low Nibble to console
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         pop     de
@@ -229,10 +229,10 @@ TypeString:
         ld      a,(hl)
         or      a
         ret     z
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         inc     hl
@@ -305,10 +305,10 @@ ReadLine:
         ld      (RepeatCmd),a   ;reset repeat!
         jr      z,1f
                                 ;yes, now see if it's a <CR>
-COND    1-CPM
+COND    1-SIM
         call	ReadChar
 ENDC
-COND    CPM
+COND    SIM
 7:	in	a,(0)
 	or	a
 	jr	z,7b
@@ -318,10 +318,10 @@ ENDC
         ret     z               ;yes, it's a <CR>, return
         jp      2f
 1:                              ;read char
-COND    1-CPM
+COND    1-SIM
         call	ReadChar
 ENDC
-COND    CPM
+COND    SIM
 7:	in	a,(0)
 	or	a
 	jr	z,7b
@@ -330,10 +330,10 @@ ENDC
 2:      ld      (hl),a          ;store-it
         cp      CR              ;CR?
         ret     z               ;if CR, do not output-it, just return
-COND    CPM
+COND    SIM
         cp      DELETE          ;BackSpace?
 ENDC
-COND    1-CPM
+COND    1-SIM
         cp      BACKSPACE       ;BackSpace? / or DELETE ??? TO BE TESTED ON SCM !!!
 ENDC
         jr      nz,2f
@@ -348,10 +348,10 @@ ENDC
 2:
         inc     hl              ;increment pointer
                                 ;type char
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         djnz    1b
@@ -861,7 +861,7 @@ NxT:    ld      e,(hl)          ;get next in list
  	push	bc		;ID on stack
 	jr      NxT
 
-COND	CPM=0
+COND	SIM=0
 ;
 ;	up to low 6W
 ;	(size 2FH)

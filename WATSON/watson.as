@@ -95,7 +95,7 @@ ENDC
         GLOBAL  StoreDE
         GLOBAL  CheckPC
 	GLOBAL	GetTaskByID
-COND	CPM=0
+COND	SIM=0
 	GLOBAL	UpToLow100H
 	GLOBAL	?UP_TO_LOW_6W,?UP_TO_LOW_4B
 	GLOBAL	$FFBC,$FFEB
@@ -111,7 +111,7 @@ ENDC
 ;
         di                              ;disable interrupts
         ld      sp,TopStack
-COND    CPM
+COND    SIM
         GLOBAL  watson, _watson
 _watson:
 watson:
@@ -150,11 +150,11 @@ ENDC
         jr      z,2f
         ld      hl,SorryQuitting
         call    TypeString
-COND    CPM
+COND    SIM
         ld      c,0
         jp      5
 ENDC
-COND	1-CPM
+COND	1-SIM
 COND	1-MM
 	ROM_IN
 COND	1-ROM
@@ -172,7 +172,7 @@ COND	MM
 ENDC
 ENDC
 2:      				;check ok
-COND	CPM=0
+COND	SIM=0
 	ld	de,_PC
 	call	DEtoHL
 	ld	e,(hl)
@@ -197,10 +197,10 @@ loop:   ld      hl,msgPrompt            ;print CR,LF,':'
         jr      z,1f
                                         ;command not found
         ld      a,'?'                   ;type '?'
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         jr      loop
@@ -210,7 +210,7 @@ ENDC
         ld      de,InputBuf+1           ;DE=pointer of next char after command
         jp      (hl)                    ;execute command
 ;
-COND	CPM
+COND	SIM
 msgAllT:        defm    'All tasks list header='
                 defb    0
 msgActT:        defm    'Active tasks list header='
@@ -317,10 +317,10 @@ linesloop:
                                 ;print 16 bytes in hexa
 bytesloop:
         ld      a,BLANK         ;print BLANK
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         ld      a,(hl)          ;get byte
@@ -339,20 +339,20 @@ ENDC
         call    DEtoHL          ;Verify and Adjust-it, no need to check CARRY (already done)
         pop     bc
         ld      a,BLANK         ;print BLANK
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         ld      c,10H
 asciiloop:
         ld      a,(hl)          ;get byte
         call    FilterChar      ;make-it printable
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         inc     de
@@ -442,10 +442,10 @@ SemDisplay:
         jp      nz,SyntaxErr    ;it's not a TCB
                                 ;it is a TCB, print its address
         ld      a,BLANK
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         call    TypeBC          ;print DE=next in hexa
@@ -598,10 +598,10 @@ NxTCB:  call    DEtoHL          ;CARRY=0
         ld      h,d             ;HL=DE=next
         add     hl,bc           ;HL=next+offset
         ld      a,BLANK
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         call    TypeHL          ;print TCB
@@ -624,10 +624,10 @@ CrtTCBDisplay:
         inc     hl              ;no need to verify and adjust!
         ld      b,(hl)          ;BC=TCB of Current Active Task
         ld      a,BLANK         ;type a blank
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         jp      TypeBC          ;print BC=TCB in hexa
@@ -687,17 +687,17 @@ DynMemDisplay:
         ld      b,(ix-3)        ;BC=block size
         call    TypeBC          ;print crt block size
         ld      a,':'
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
 2:      ld      a,BLANK
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         call    TypeDE          ;print block addr
@@ -729,10 +729,10 @@ ENDC
         pop     bc
         call    TypeBC
 ;				;walk trough the dynamic memory
-COND	CPM
+COND	SIM
 	ld	de,8000H
 ENDC
-COND	CPM=0
+COND	SIM=0
 	ld	de,0E000H
 ENDC
 	call	DEtoHL
@@ -761,7 +761,7 @@ loopm:	ld	a,(iy+5)	;A=bElement size
 	PRINT	msgBlockAddr
 	push	iy
 	pop	hl
-COND	CPM=0
+COND	SIM=0
 	ld	bc,2000H	;delta to real Dyn mem base
 	add	hl,bc
 ENDC
@@ -889,10 +889,10 @@ MBDisplay:
         jp      nz,SyntaxErr    ;it's not a TCB
                                 ;it is a TCB, print its address
         ld      a,BLANK
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         call    TypeBC          ;print DE=next in hexa
@@ -923,10 +923,10 @@ ENDC
         sbc     hl,bc           ;is crt == header ?
         jr      z,4f            ;if yes, go print msg size
         ld      a,BLANK
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         call    TypeBC          ;print BC=next in hexa
@@ -1064,10 +1064,10 @@ findto: ld      a,(hl)          ;check if '(to AAAA' is present
         ld      b,(hl)          ;B=counter
 3:      inc     hl
         ld      a,(hl)
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         djnz    3b
@@ -1137,11 +1137,11 @@ Exit:
         ld      a,(de)
         cp      CR
         jp      nz,SyntaxErr
-COND    CPM
+COND    SIM
         ld      c,0
         jp      5                       ;CP/M reset
 ENDC
-COND	1-CPM
+COND	1-SIM
 COND	1-MM
 	ROM_IN
 COND	1-ROM
@@ -1169,10 +1169,10 @@ Help:   ld      hl,msgHelp
 SyntaxErr:
         ld      sp,ix                   ;restore SP
         ld      a,'?'                   ;type ?
-COND    1-CPM
+COND    1-SIM
         call	TypeChar
 ENDC
-COND    CPM
+COND    SIM
 	out	(1),a
 ENDC
         ret
@@ -1201,7 +1201,7 @@ SanityCheck:
         ld      hl,W_P
         call    SetRTM_Pointers
 
-COND	CPM=0
+COND	SIM=0
 					;using hexboot/mmboot up to low routines from (DF00-DFFF)
         call    SnapLoadDM              ;load DynMem (8K-100H) from UP E000-FF00 to LOW C000-DF00
 	

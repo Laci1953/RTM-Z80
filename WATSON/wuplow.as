@@ -7,13 +7,13 @@
 ;
         GLOBAL  SnapLoadCD
         GLOBAL  SnapLoadDM
-COND	CPM=0
+COND	SIM=0
 	GLOBAL	UpToLow100H
 	GLOBAL	?UP_TO_LOW_6W,?UP_TO_LOW_4B
 ENDC
 ;
         GLOBAL  CrtPage
-COND    CPM
+COND    SIM
         GLOBAL  TypeString
         GLOBAL  TypeBC
 ENDC
@@ -114,7 +114,7 @@ SnapLoadCD:
         push    ix
         push    iy
         ld      (CrtPage),bc    ;save current page base addr
-COND    CPM
+COND    SIM
         ld      hl,bufcrtp
         call    TypeString
         call    TypeBC
@@ -150,7 +150,7 @@ loop20:	push	af
 ;       IX,IY,DE,HL,BC not affected
 ;
 SnapLoadDM:
-COND    CPM
+COND    SIM
         ret
 ENDC
         push    bc              ;save regs
