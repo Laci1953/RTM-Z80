@@ -13,7 +13,7 @@ C_LANG		equ 1	;1=Support for C language API
 IO_COMM		equ 0	;1=Support for async communications I/O
 MM		equ 0	;1=Memory Module is used, 0=SC108 is used
 BDOS		equ 1	;1=BDOS disk file support
-LPT		equ 1	;1=Parallel Printer (IEEE 1284 Byte mode) (not for SIM)
+LPT		equ 1	;1=Parallel Printer (Compatibility mode) (not for SIM)
 ;
 ;	ROM/RAM options (only if SIM=0)
 ;
