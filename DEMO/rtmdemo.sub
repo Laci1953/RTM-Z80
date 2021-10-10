@@ -1,0 +1,4 @@
+xsub
+link
+ -x -z -C100h -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -ortmdemo.com\
+ cpmboot.obj rtmdemo.obj rand.obj rt.lib libc.lib
