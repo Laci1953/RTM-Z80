@@ -3,10 +3,6 @@ RTM/Z80 is a multitasking kernel, built for Z80 based computers, written in Z80 
 
 It is intended to be a simple and easy to use learning tool, for those who want to understand the tips and tricks of the multitasking software systems.
 
-DEMO/HEX/Z80SIM contains a demo application, to be run on Z80SIM CP/M
-
-DEMO/HEX/SC108 contains a demo application, to be run on RC2014 SC108 (using RESOURCES/HEXBOOT.HEX)
-
 Current version is 2.1
 
 Source files were updated to allow building the system on RC2014's CP/M even when TPA area is small
