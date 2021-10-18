@@ -1,0 +1,6 @@
+xsub
+zas cpmb.as
+link>
+-ptext=40H/07F00H -ocpmb108.obj cpmb.obj
+objtohex cpmb108.obj cpmb108.hex
+type cpmb108.hex
