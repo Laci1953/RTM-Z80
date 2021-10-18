@@ -1,0 +1,8 @@
+xsub
+link
+  -x -z -pzero=0/2880H,text/,ram=0D000H/,bss/ -os.obj -mv2.map -dsc108r2.sym rtsys1a.obj \
+  rtsys1b.obj rtsys2a.obj rtsys2b.obj queue.obj io.obj rtclk.obj cmd.obj \
+  hexload.obj mailbox.obj balloc.obj dlist.obj util.obj snapshot.obj
+objtohex s.obj sc108r2.hex
+symtoas sc108r2.as sc108r2.sym
+zas sc108r2.as
