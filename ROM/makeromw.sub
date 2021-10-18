@@ -1,4 +1,0 @@
-xsub
-link
-  -ptext=0E000H/6800H -mwatson.map -os.obj watson.obj wutil.obj wuplow.obj wdiss.obj
-objtohex s.obj watson.hex
