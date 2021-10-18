@@ -1,0 +1,6 @@
+xsub
+zas cpmb.as
+link
+-ptext=40h/4040h -ocpmb512.obj cpmb.obj
+objtohex cpmb512.obj cpmb512.hex
+type cpmb512.hex

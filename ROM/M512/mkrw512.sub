@@ -1,0 +1,5 @@
+xsub
+link
+  -ptext=0,data,bss=0DF00H -mwatson.map -os.obj watson.obj wutil.obj wdiss.obj
+objtohex s.obj w512.hex
+type w512.hex

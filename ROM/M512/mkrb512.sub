@@ -1,0 +1,3 @@
+zas boot512.as
+objtohex boot512.obj boot512.hex
+type boot512.hex

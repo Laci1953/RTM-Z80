@@ -1,0 +1,8 @@
+xsub
+link
+  -x -z -pzero=0/0,text/,fcoo=0FC00H/,ram=0D000H/,bss/ -os.obj -mv1.map -dscmmr1.sym rtsys1a.obj \
+  rtsys1b.obj rtsys2a.obj rtsys2b.obj queue.obj io.obj rtclk.obj cmd.obj \
+  hexload.obj mailbox.obj balloc.obj dlist.obj util.obj snapshot.obj boot128.obj
+objtohex s.obj scmmr1.hex
+symtoas scmmr1.as scmmr1.sym
+zas scmmr1.as
