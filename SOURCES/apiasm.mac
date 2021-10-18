@@ -1,0 +1,150 @@
+;
+;	Copyright (C) 2021 by Ladislau Szilagyi
+;
+;	RTM/Z80 API
+;
+COND	C_LANG
+	GLOBAL	_GetHost
+	GLOBAL	_StartUp
+	GLOBAL	_ShutDown
+	GLOBAL	_Balloc
+	GLOBAL	_Bdealloc
+	GLOBAL	_Extend  
+	GLOBAL	_BallocS
+	GLOBAL	_GetMaxFree
+	GLOBAL	_GetTotalFree
+	GLOBAL	_GetOwnerTask
+	GLOBAL	_StackLeft
+	GLOBAL	_GetTaskByID
+	GLOBAL  _GetTaskSts
+	GLOBAL  _SetTaskPrio
+	GLOBAL	_GetTaskPrio
+	GLOBAL	_RunTask
+	GLOBAL	_StopTask
+	GLOBAL	_GetCrtTask
+	GLOBAL	_IncTaskStack
+	GLOBAL	_Suspend
+	GLOBAL	_Resume
+	GLOBAL	_GetSemSts
+	GLOBAL	_MakeSem
+	GLOBAL	_DropSem
+	GLOBAL	_Signal
+	GLOBAL	_Wait
+	GLOBAL	_ResetSem
+	GLOBAL	_MakeQ
+	GLOBAL	_DropQ
+	GLOBAL	_WriteQ
+	GLOBAL	_ReadQ
+	GLOBAL	_MakeMB
+	GLOBAL	_DropMB
+	GLOBAL	_SendMail
+	GLOBAL	_GetMail
+	GLOBAL	_CON_Write
+	GLOBAL  _CON_Read
+	GLOBAL	_CTRL_C
+	GLOBAL	_RoundRobinON
+	GLOBAL	_RoundRobinOFF
+	GLOBAL  _MakeTimer
+	GLOBAL  _DropTimer
+	GLOBAL	_StartTimer
+	GLOBAL	_StopTimer
+	GLOBAL	_GetTicks
+COND	LPT .and. NOSIM
+	GLOBAL	_LPT_Print
+ENDC
+COND	IO_COMM
+	GLOBAL  _Reset_RWB
+	GLOBAL	_ReadB
+	GLOBAL	_WriteB
+	GLOBAL	_GetCountB
+	GLOBAL	_XmSend
+	GLOBAL	_XmRecv
+ENDC
+ENDC
+	GLOBAL	__GetHost
+	GLOBAL	__StartUp
+	GLOBAL	__ShutDown
+	GLOBAL	__InitL
+	GLOBAL	__AddToL
+	GLOBAL	__FirstFromL
+	GLOBAL	__LastFromL
+	GLOBAL	__NextFromL
+	GLOBAL	__RemoveFromL
+	GLOBAL	__InsertInL
+	GLOBAL	__GetFromL
+	GLOBAL	__RotateL
+	GLOBAL	__Balloc
+	GLOBAL	__Bdealloc
+	GLOBAL	__Extend  
+	GLOBAL	__BallocS
+	GLOBAL	__GetMaxFree
+	GLOBAL	__GetTotalFree
+	GLOBAL	__GetOwnerTask
+	GLOBAL	__StackLeft
+	GLOBAL	__GetTaskByID
+	GLOBAL	__GetTaskSts
+	GLOBAL  __SetTaskPrio
+	GLOBAL	__GetTaskPrio
+	GLOBAL	__RunTask
+	GLOBAL	__StopTask
+	GLOBAL	__GetCrtTask
+	GLOBAL	__IncTaskStack
+	GLOBAL	__Suspend
+	GLOBAL	__Resume
+	GLOBAL	__GetSemSts
+	GLOBAL	__MakeSem
+	GLOBAL	__DropSem
+	GLOBAL	__Signal
+	GLOBAL	__Wait
+	GLOBAL	__InitSem
+	GLOBAL	__ResetSem
+	GLOBAL	__MakeQ
+	GLOBAL	__DropQ
+	GLOBAL	__WriteQ
+	GLOBAL	__ReadQ
+	GLOBAL	__InitQ
+	GLOBAL	__MakeMB
+	GLOBAL	__DropMB
+	GLOBAL	__SendMail
+	GLOBAL	__GetMail
+	GLOBAL	__CON_Write
+	GLOBAL  __CON_Read
+	GLOBAL	__CTRL_C
+	GLOBAL	__RoundRobinON
+	GLOBAL	__RoundRobinOFF
+	GLOBAL  __MakeTimer
+	GLOBAL  __DropTimer
+	GLOBAL	__StartTimer
+	GLOBAL	__StopTimer
+	GLOBAL	__GetTicks
+COND	LPT .and. NOSIM
+	GLOBAL	__LPT_Print
+ENDC
+COND	IO_COMM
+	GLOBAL  __Reset_RWB
+	GLOBAL	__ReadB
+	GLOBAL	__WriteB
+	GLOBAL	__GetCountB
+	GLOBAL	__XmSend
+	GLOBAL	__XmRecv
+ENDC
+COND	NOSIM
+COND	1-M512
+	GLOBAL	__LowToUp100H
+	GLOBAL	__UpToLow100H
+COND	C_LANG
+	GLOBAL _LowToUp100H
+	GLOBAL _UpToLow100H
+ENDC
+ENDC
+ENDC
+COND	BDOS
+	GLOBAL	__bdos
+	GLOBAL	BDOS_Sem
+ENDC
+COND	M512
+	GLOBAL	__Save100H,__Load100H
+COND	C_LANG
+	GLOBAL	_Save100H,_Load100H
+ENDC
+ENDC
