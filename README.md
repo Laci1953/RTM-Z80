@@ -5,5 +5,4 @@ It is intended to be a simple and easy to use learning tool, for those who want 
 
 Current version is 2.1
 
-Source files were updated to allow building the system on RC2014's CP/M even when TPA area is small
 
