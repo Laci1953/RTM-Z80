@@ -61,7 +61,7 @@ As a conclusion:
 - The TE editor 128KB version will NOT work with the "classic" RC2014's CP/M, my "custom" large TPA CP/M must be used (use CPM/PutSys/SIO_PutSys_CF64_CPM_DA00H.hex)
 - The TE editor 128KB version will work only with SC108 boards (or compatible) provided with a SCM version containing the (undocumented) API function $2B (write A to address DE on Upper 64KB RAM). I received my SCM EPROM in July this year, an it contains this function. I hope that also older versions of SCM contain this function.
 
-Comparing the tho versions of TE (128KB vs. 512KB), the 512KB version is by far the best. 
+Comparing the two versions of TE (128KB vs. 512KB), the 512KB version is by far the best. 
 
 First, the size of files that can be edited is larger.
 Then, the initial file opening when starting the editor is faster.
