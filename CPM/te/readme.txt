@@ -2,8 +2,8 @@ Text editor "te" .COM files (in .HEX format) for SC108 128KB RAM (or compatibles
 
 Settings:
 
-128KB - up to 2048 lines, 50x120 screen, VT100 compatible, with WordStar style keyboard
-512KB - up to 8192 lines, 50x120 screen, VT100 compatible, with WordStar style keyboard
+128KB - up to 2048 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard
+512KB - up to 8192 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard
 
 Design details and some constraints:
 
