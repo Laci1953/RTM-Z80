@@ -1,0 +1,10 @@
+xsub
+link
+  -x -z -pzero=0/0C000H,text/,ram=0D000H/,bss/ -os.obj -drm02m512.sym rtsys1a.obj \
+  rtsys1b.obj rtsys2a.obj rtsys2b.obj queue.obj io.obj rtclk.obj cmd.obj \
+  hexload.obj mailbox.obj balloc.obj dlist.obj util.obj move512.obj xmodem.obj \
+  BDOS.obj BIOS.obj printer.obj
+objtohex s.obj rm02m512.hex
+symtoas rm02m512.as rm02m512.sym
+zas rm02m512.as
+type rm02m512.hex
