@@ -12,3 +12,7 @@ C000H			4000H		RTM v2
 
 #######################################################################
 
+The configurations provided here are:
+1. no DEBUG, DYNM512=ON
+2. no DEBUG, DYNM512=OFF
+
