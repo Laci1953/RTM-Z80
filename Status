@@ -1,4 +1,8 @@
 Finished testing on Z80SIM, RC2014 (RAM version on SC108, EPROM+RAM version on SC108 and Memory Module)
 Added CP/M disk files support
 Added XMODEM support
-Added support for 64KB Upper bank RAM access 
+Added PIO support
+Added parallel printer interface
+Added support for 64KB Upper bank RAM access for 128KB RAM configurations (SC108, 128KB memory module)
+Added version for 512KB RAM/ROM memory module
+Added extended 512KB dynamic memory for 512KB RAM/ROM memory module
