@@ -1,0 +1,396 @@
+	(UNOPTIMIZED VERSION OF OVERLAY)
+
+D>type base.c
+#include <dyn512.h>
+
+char *pBuf1, *pBuf2;
+char bank1, bank2;
+
+#define myproc		0x4000
+#define ROM_myproc	2	/* 3'rd 16KB ROM, offset 8000H */
+
+void (*fnc)(char*,char,char*,char);
+
+void main(void)
+{
+  Init512Banks();
+  pBuf1=alloc512(100, &bank1);
+  pBuf2=alloc512(100, &bank2);
+  setRAMbank(bank1);
+  strcpy(pBuf1, "This is string1");
+  fnc=(void(*)(char*))myproc;
+  setROMbank(ROM_fillbuf);
+  (*fnc)(pBuf1,bank1,pBuf2,bank2);
+  setRAMbank(bank2);
+  printf("\r\n%s",pBuf2);
+  free512(pBuf1,bank1);
+  free512(pBuf2,bank2);
+}
+
+D>type overlay.c
+#include <stdio.h>
+#include <string.h>
+#include <dyn512.h>
+
+void myproc(char* p1, char bank1, char* p2, char bank2)
+{
+  setRAMbank(bank1);
+  printf("\r\n%s",p1);
+  setRAMbank(bank2);
+  strcpy(p2, "String2");
+}
+
+D>c -c overlay.c
+D>link
+link>  -ptext=4000H/08000H,data/,bss=0C000H/ -os.obj -mm.map overlay.obj dyn512.obj csv.obj libc.lib
+
+	(link at 4000H and load code at 08000H, because it is the ROM #2; bss for all overlay code is at 0C000H)
+
+D>type m.map
+Machine type is Z80
+
+overlay.obj     text         4000       46      data         4FA4        D
+dyn512.obj      (abs)           0     CDEA      text         4046      2DE
+csv.obj         text         4324       27
+
+libc.lib
+printf.obj      text         434B       1F
+doprnt.obj      text         436A      2F3      data         4FB1        7
+                bss          C000        5
+fputc.obj       text         465D       58
+flsbuf.obj      text         46B5       A7
+stdclean.obj    text         475C       25      data         4FB8       40
+                bss          C005      200
+fclose.obj      text         4781       67
+fflush.obj      text         47E8       80
+buf.obj         text         4868       46      bss          C205        2
+write.obj       text         48AE      21C
+signal.obj      text         4ACA       73      bss          C207        2
+getuid.obj      text         4B3D       26
+bdos.obj        text         4B63       1E
+cleanup.obj     text         4B81       63      data         4FF8      150
+asladd.obj      text         4BE4        9
+atoi.obj        text         4BED       40
+ctype_.obj      data         5148       81
+iregset.obj     text         4C2D       26
+ladd.obj        text         4C53        E
+brelop.obj      text         4C61       14
+wrelop.obj      text         4C75        F
+pnum.obj        text         4C84      15A      data         51C9       11
+ldiv.obj        text         4DDE      120
+bmove.obj       text         4EFE       10
+imul.obj        text         4F0E       1F
+alrsh.obj       text         4F2D       14
+sbrk.obj        text         4F41       43      bss          C209        2
+strcpy.obj      text         4F84       12
+strlen.obj      text         4F96        E
+
+TOTAL           Name         Link     Load   Length
+                (abs)           0        0     CDEA
+                text         4000     8000      FA4
+                data         4FA4     8FA4      236
+                bss          C000     91DA      20B
+
+                                  Symbol Table
+
+_GetTotalFree text  4046  _Init512Banks text  40CA  __Bbss        bss   91DA
+__Bdata       data  8FA4  __Btext       text  8000  __Hbss        bss   C20B
+__Hdata       data  51DA  __Htext       text  4FA4  __Lbss        bss   C000
+__Ldata       data  4FA4  __Ltext       text  4000  __bufallo     text  4868
+__buffree     text  4892  __cleanup     text  475C  __cpm_clean   text  4B81
+__ctype_      data  5148  __doprnt      text  43AB  __fcb         data  4FF8
+__flsbuf      text  46B5  __iob         data  4FB8  __pnum        text  4C84
+__putrno      text  4BA3  __sibuf       bss   C005  __sigchk      text  4AFD
+_alloc512     text  417F  _atoi         text  4BF4  _bdos         text  4B63
+_bmove        text  4EFE  _brk          text  4F41  _checksp      text  4F75
+_close        text  4336  _exit         text  4336  _fclose       text  4781
+_fflush       text  47E8  _fputc        text  465D  _free512      text  41C4
+_getuid       text  4B3D  _movmem       text  4EFE  _myproc       text  4000
+_printf       text  434B  _sbrk         text  4F49  _setRAMbank   text  40BA
+_setROMbank   text  40C2  _setuid       text  4B51  _signal       text  4ACA
+_strcpy       text  4F84  _strlen       text  4F96  _write        text  48AE
+aladd         text  4C53  aldiv         text  4E2A  almod         text  4E51
+alrsh         text  4F2D  amul          text  4F0E  asaladd       text  4BE4
+asaldiv       text  4E15  asalmod       text  4E63  aslladd       text  4BE4
+aslldiv       text  4E49  asllmod       text  4E76  brelop        text  4C61
+cret          text  4330  csv           text  4324  indir         text  432F
+iregset       text  4C2D  iregstore     text  4C47  lladd         text  4C53
+lldiv         text  4E3D  llmod         text  4E6B  lmul          text  4F0E
+ncsv          text  4337  wrelop        text  4C75
+
+	(so, myproc is at 4000H)
+
+D>objtohex s.obj overlay.hex
+
+(overlay.hex will be "burned" to the 512KB EPROM, at offset 08000H)
+
+>c -o base.c dyn512.as
+
+	(built as a normal .COM file)
+
+	(burn EPROM with overlay.hex at 8000H)
+
+>base
+
+This is string1
+String2
+>
+
+	(OPTIMIZED VERSION OF OVERLAY)
+
+D>c -o -fbase.sym base.c dyn512.as
+
+	(EDIT base.sym to keep only libc functions)
+
+D>type base.sym
+0DD5 __cpm_clean
+1471 _fnc
+11A0 _brk
+116D amul
+116D lmul
+1289 __fcb
+0EB2 aladd
+1248 __iob
+0EB2 lladd
+0DA1 _bdos
+0E53 _atoi
+10B0 almod
+1089 aldiv
+11A8 _sbrk
+10CA llmod
+118C alrsh
+109C lldiv
+1680 __Hbss
+146B __Lbss
+115D _bmove
+0EE3 __pnum
+07BE _fputc
+0EC0 brelop
+0A73 _write
+0ED4 wrelop
+146B __Hdata
+122B __Ldata
+167A __argc_
+0E43 asaladd
+122B __Htext
+0E43 aslladd
+1478 __sibuf
+08E2 _fclose
+0DBF _bdoshl
+0D08 _signal
+0D7B _getuid
+10C2 asalmod
+1074 asaldiv
+0949 _fflush
+10D5 asllmod
+0D8F _setuid
+10A8 aslldiv
+115D _movmem
+04AC _printf
+0E8C iregset
+11F5 _strlen
+11E3 _strcpy
+0A22 startup
+0D3B __sigchk
+0816 __flsbuf
+11D4 _checksp
+13D9 __ctype_
+050C __doprnt
+0DF7 __putrno
+09F3 __buffree
+09C9 __bufallo
+08BD __cleanup
+0A25 __getargs
+0EA6 iregstore
+
+D>symtoas basedefs.as base.sym
+D>type basedefs.as
+GLOBAL __cpm_clean
+__cpm_clean EQU 00DD5H
+GLOBAL _fnc
+_fnc EQU 01471H
+GLOBAL _brk
+_brk EQU 011A0H
+GLOBAL amul
+amul EQU 0116DH
+GLOBAL lmul
+lmul EQU 0116DH
+GLOBAL __fcb
+__fcb EQU 01289H
+GLOBAL aladd
+aladd EQU 00EB2H
+GLOBAL __iob
+__iob EQU 01248H
+GLOBAL lladd
+lladd EQU 00EB2H
+GLOBAL _bdos
+_bdos EQU 00DA1H
+GLOBAL _atoi
+_atoi EQU 00E53H
+GLOBAL almod
+almod EQU 010B0H
+GLOBAL aldiv
+aldiv EQU 01089H
+GLOBAL _sbrk
+_sbrk EQU 011A8H
+GLOBAL llmod
+llmod EQU 010CAH
+GLOBAL alrsh
+alrsh EQU 0118CH
+GLOBAL lldiv
+lldiv EQU 0109CH
+GLOBAL __Hbss
+__Hbss EQU 01680H
+GLOBAL __Lbss
+__Lbss EQU 0146BH
+GLOBAL _bmove
+_bmove EQU 0115DH
+GLOBAL __pnum
+__pnum EQU 00EE3H
+GLOBAL _fputc
+_fputc EQU 007BEH
+GLOBAL brelop
+brelop EQU 00EC0H
+GLOBAL _write
+_write EQU 00A73H
+GLOBAL wrelop
+wrelop EQU 00ED4H
+GLOBAL __Hdata
+__Hdata EQU 0146BH
+GLOBAL __Ldata
+__Ldata EQU 0122BH
+GLOBAL __argc_
+__argc_ EQU 0167AH
+GLOBAL asaladd
+asaladd EQU 00E43H
+GLOBAL __Htext
+__Htext EQU 0122BH
+GLOBAL aslladd
+aslladd EQU 00E43H
+GLOBAL __sibuf
+__sibuf EQU 01478H
+GLOBAL _fclose
+_fclose EQU 008E2H
+GLOBAL _bdoshl
+_bdoshl EQU 00DBFH
+GLOBAL _signal
+_signal EQU 00D08H
+GLOBAL _getuid
+_getuid EQU 00D7BH
+GLOBAL asalmod
+asalmod EQU 010C2H
+GLOBAL asaldiv
+asaldiv EQU 01074H
+GLOBAL _fflush
+_fflush EQU 00949H
+GLOBAL asllmod
+asllmod EQU 010D5H
+GLOBAL _setuid
+_setuid EQU 00D8FH
+GLOBAL aslldiv
+aslldiv EQU 010A8H
+GLOBAL _movmem
+_movmem EQU 0115DH
+GLOBAL _printf
+_printf EQU 004ACH
+GLOBAL iregset
+iregset EQU 00E8CH
+GLOBAL _strlen
+_strlen EQU 011F5H
+GLOBAL _strcpy
+_strcpy EQU 011E3H
+GLOBAL startup
+startup EQU 00A22H
+GLOBAL __sigchk
+__sigchk EQU 00D3BH
+GLOBAL __flsbuf
+__flsbuf EQU 00816H
+GLOBAL _checksp
+_checksp EQU 011D4H
+GLOBAL __ctype_
+__ctype_ EQU 013D9H
+GLOBAL __doprnt
+__doprnt EQU 0050CH
+GLOBAL __putrno
+__putrno EQU 00DF7H
+GLOBAL __buffree
+__buffree EQU 009F3H
+GLOBAL __bufallo
+__bufallo EQU 009C9H
+GLOBAL __cleanup
+__cleanup EQU 008BDH
+GLOBAL __getargs
+__getargs EQU 00A25H
+GLOBAL iregstore
+iregstore EQU 00EA6H
+
+D>zas basedefs.as
+D>link
+link>  -ptext=4000H/08000H,data/,bss=0C000H/ -os.obj -mm.map overlay.obj dyn512.obj csv.obj basedefs.obj
+
+	(use basedefs.obj instead of libc.lib)
+
+D>type m.map
+Machine type is Z80
+
+overlay.obj     text         4000       46      data         434B        D
+dyn512.obj      (abs)           0     CDEA      text         4046      2DE
+csv.obj         text         4324       27
+basedefs.obj
+
+TOTAL           Name         Link     Load   Length
+                (abs)           0        0     CDEA
+                text         4000     8000      34B
+                data         434B     834B        D
+                bss          C000     8358        0
+
+                                  Symbol Table
+
+AVAILABLE     (abs) 0000  BANKS_CNT     (abs) 001C  Buddy         (abs) CDB8
+Buf16K        (abs) 8000  EXITSTS       (abs) 0080  LISTS_NR      (abs) 000B
+Lists         (abs) CB50  MAX_SIZE      (abs) 000A  MaxAv         (abs) CDCE
+OFF_SIZE      (abs) 0005  OFF_STS       (abs) 0004  OPTIM         (abs) 0001
+_GetTotalFree text  4046  _Init512Banks text  40CA  __Bbss        bss   8358
+__Bdata       data  834B  __Btext       text  8000  __Hbss        (abs) 1680
+__Hdata       (abs) 146B  __Htext       (abs) 122B  __Lbss        (abs) 146B
+__Ldata       (abs) 122B  __Ltext       (abs) 0000  __argc_       (abs) 167A
+__bufallo     (abs) 09C9  __buffree     (abs) 09F3  __cleanup     (abs) 08BD
+__cpm_clean   (abs) 0DD5  __ctype_      (abs) 13D9  __doprnt      (abs) 050C
+__fcb         (abs) 1289  __flsbuf      (abs) 0816  __getargs     (abs) 0A25
+__iob         (abs) 1248  __pnum        (abs) 0EE3  __putrno      (abs) 0DF7
+__sibuf       (abs) 1478  __sigchk      (abs) 0D3B  _alloc512     text  417F
+_atoi         (abs) 0E53  _bank1        (abs) 146F  _bank2        (abs) 1470
+_bdos         (abs) 0DA1  _bdoshl       (abs) 0DBF  _bmove        (abs) 115D
+_brk          (abs) 11A0  _checksp      (abs) 11D4  _close        text  4336
+_exit         text  4336  _fclose       (abs) 08E2  _fflush       (abs) 0949
+_fnc          (abs) 1471  _fputc        (abs) 07BE  _free512      text  41C4
+_getuid       (abs) 0D7B  _main         (abs) 013D  _movmem       (abs) 115D
+_myproc       text  4000  _pBuf1        (abs) 146B  _pBuf2        (abs) 146D
+_printf       (abs) 04AC  _sbrk         (abs) 11A8  _setRAMbank   text  40BA
+_setROMbank   text  40C2  _setuid       (abs) 0D8F  _signal       (abs) 0D08
+_strcpy       (abs) 11E3  _strlen       (abs) 11F5  _write        (abs) 0A73
+aladd         (abs) 0EB2  aldiv         (abs) 1089  almod         (abs) 10B0
+alrsh         (abs) 118C  amul          (abs) 116D  arg           (abs) 0006
+asaladd       (abs) 0E43  asaldiv       (abs) 1074  asalmod       (abs) 10C2
+aslladd       (abs) 0E43  aslldiv       (abs) 10A8  asllmod       (abs) 10D5
+bigloop       (abs) 01E7  brelop        (abs) 0EC0  cret          text  4330
+csv           text  4324  entry         (abs) 0005  func          (abs) 0006
+indir         text  432F  initBDY       (abs) 0298  initL         (abs) 0258
+initL10       (abs) 02A8  initLH        (abs) 027A  initLHB       (abs) 0273
+iregset       (abs) 0E8C  iregstore     (abs) 0EA6  lladd         (abs) 0EB2
+lldiv         (abs) 109C  llmod         (abs) 10CA  lmul          (abs) 116D
+loop          (abs) 0321  loopav        (abs) 02CE  ncsv          text  4337
+nextb         (abs) 020F  nextl         (abs) 0207  nularg        (abs) 122B
+sguid         (abs) 0020  start         (abs) 0100  startup       (abs) 0A22
+toobig        (abs) 033A  try           (abs) 0327  wrelop        (abs) 0ED4
+
+	(notice that now, there is no more libc code in the overlay,
+	all calls to libc are made directly to libc code in base)
+
+	(burn EPROM with overlay.hex at 8000H)
+
+>base
+
+This is string1
+String2
+>

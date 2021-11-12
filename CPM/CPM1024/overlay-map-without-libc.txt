@@ -1,0 +1,52 @@
+Machine type is Z80
+
+overlay.obj     text         4000       46      data         434B        D
+dyn512.obj      (abs)           0     CDEA      text         4046      2DE
+csv.obj         text         4324       27
+basedefs.obj
+
+TOTAL           Name         Link     Load   Length
+                (abs)           0        0     CDEA
+                text         4000     8000      34B
+                data         434B     834B        D
+                bss          C000     8358        0
+
+                                  Symbol Table
+
+AVAILABLE     (abs) 0000  BANKS_CNT     (abs) 001C  Buddy         (abs) CDB8
+Buf16K        (abs) 8000  EXITSTS       (abs) 0080  LISTS_NR      (abs) 000B
+Lists         (abs) CB50  MAX_SIZE      (abs) 000A  MaxAv         (abs) CDCE
+OFF_SIZE      (abs) 0005  OFF_STS       (abs) 0004  OPTIM         (abs) 0001
+_GetTotalFree text  4046  _Init512Banks text  40CA  __Bbss        bss   8358
+__Bdata       data  834B  __Btext       text  8000  __Hbss        (abs) 1680
+__Hdata       (abs) 146B  __Htext       (abs) 122B  __Lbss        (abs) 146B
+__Ldata       (abs) 122B  __Ltext       (abs) 0000  __argc_       (abs) 167A
+__bufallo     (abs) 09C9  __buffree     (abs) 09F3  __cleanup     (abs) 08BD
+__cpm_clean   (abs) 0DD5  __ctype_      (abs) 13D9  __doprnt      (abs) 050C
+__fcb         (abs) 1289  __flsbuf      (abs) 0816  __getargs     (abs) 0A25
+__iob         (abs) 1248  __pnum        (abs) 0EE3  __putrno      (abs) 0DF7
+__sibuf       (abs) 1478  __sigchk      (abs) 0D3B  _alloc512     text  417F
+_atoi         (abs) 0E53  _bank1        (abs) 146F  _bank2        (abs) 1470
+_bdos         (abs) 0DA1  _bdoshl       (abs) 0DBF  _bmove        (abs) 115D
+_brk          (abs) 11A0  _checksp      (abs) 11D4  _close        text  4336
+_exit         text  4336  _fclose       (abs) 08E2  _fflush       (abs) 0949
+_fnc          (abs) 1471  _fputc        (abs) 07BE  _free512      text  41C4
+_getuid       (abs) 0D7B  _main         (abs) 013D  _movmem       (abs) 115D
+_myproc       text  4000  _pBuf1        (abs) 146B  _pBuf2        (abs) 146D
+_printf       (abs) 04AC  _sbrk         (abs) 11A8  _setRAMbank   text  40BA
+_setROMbank   text  40C2  _setuid       (abs) 0D8F  _signal       (abs) 0D08
+_strcpy       (abs) 11E3  _strlen       (abs) 11F5  _write        (abs) 0A73
+aladd         (abs) 0EB2  aldiv         (abs) 1089  almod         (abs) 10B0
+alrsh         (abs) 118C  amul          (abs) 116D  arg           (abs) 0006
+asaladd       (abs) 0E43  asaldiv       (abs) 1074  asalmod       (abs) 10C2
+aslladd       (abs) 0E43  aslldiv       (abs) 10A8  asllmod       (abs) 10D5
+bigloop       (abs) 01E7  brelop        (abs) 0EC0  cret          text  4330
+csv           text  4324  entry         (abs) 0005  func          (abs) 0006
+indir         text  432F  initBDY       (abs) 0298  initL         (abs) 0258
+initL10       (abs) 02A8  initLH        (abs) 027A  initLHB       (abs) 0273
+iregset       (abs) 0E8C  iregstore     (abs) 0EA6  lladd         (abs) 0EB2
+lldiv         (abs) 109C  llmod         (abs) 10CA  lmul          (abs) 116D
+loop          (abs) 0321  loopav        (abs) 02CE  ncsv          text  4337
+nextb         (abs) 020F  nextl         (abs) 0207  nularg        (abs) 122B
+sguid         (abs) 0020  start         (abs) 0100  startup       (abs) 0A22
+toobig        (abs) 033A  try           (abs) 0327  wrelop        (abs) 0ED4
