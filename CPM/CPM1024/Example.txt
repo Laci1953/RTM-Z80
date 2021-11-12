@@ -1,4 +1,4 @@
-	(UNOPTIMIZED VERSION OF OVERLAY)
+	(UNOPTIMIZED VERSION OF OVERLAY - v1)
 
 D>type base.c
 #include <dyn512.h>
@@ -136,7 +136,7 @@ This is string1
 String2
 D>
 
-	(OPTIMIZED VERSION OF OVERLAY)
+	(OPTIMIZED VERSION OF OVERLAY - v2)
 
 D>c -o -fbase.sym base.c dyn512.as
 
