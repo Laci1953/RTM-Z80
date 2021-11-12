@@ -124,17 +124,17 @@ D>objtohex s.obj overlay.hex
 
 (overlay.hex will be "burned" to the 512KB EPROM, at offset 08000H)
 
->c -o base.c dyn512.as
+D>c -o base.c dyn512.as
 
 	(built as a normal .COM file)
 
 	(burn EPROM with overlay.hex at 8000H)
 
->base
+D>base
 
 This is string1
 String2
->
+D>
 
 	(OPTIMIZED VERSION OF OVERLAY)
 
