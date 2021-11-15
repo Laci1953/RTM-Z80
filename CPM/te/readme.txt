@@ -1,9 +1,9 @@
-Text editor "te" .COM files (in .HEX format) for SC108 128KB RAM (or compatibles) and 512KB RAM + 512KB ROM memory module
+Text editor "te" .COM files (in .HEX format) for RC2014's Steve Cousins SC108 128KB RAM (128), Phillip Stevens 32KB ROM + 128KB RAM memory module (MM) and 512KB RAM + 512KB ROM memory module (512)
 
 Settings:
 
-128KB - up to 2048 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard
-512KB - up to 8192 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard
+128 & MM - up to 2048 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard (*_arrows accepts also arrow keys)
+512 - up to 8192 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard (*_arrows accepts also arrow keys)
 
 Design details and some constraints:
 
