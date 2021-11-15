@@ -2,8 +2,8 @@ Text editor "te" .COM files (in .HEX format) for RC2014's Steve Cousins SC108 12
 
 Settings:
 
-128 & MM - up to 2048 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard (*_arrows accepts also arrow keys)
-512 - up to 8192 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard (*_arrows accepts also arrow keys)
+128 & MM - up to 2048 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard (accepts also arrow keys)
+512 - up to 8192 lines, 50x99 screen, VT100 compatible, with WordStar style keyboard (accepts also arrow keys)
 
 Design details and some constraints:
 
