@@ -11,9 +11,9 @@ RTM/Z80 will run, after setting the appropriate system parameters, on the follow
 
 • RC2014 homebrew Z80 computer, with or without CP/M, using the following hardware configurations:
 
-o SC112 + SC108(Z80 + 32KB SCM EPROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module)
+o SC112 + SC108(Z80 + 32KB SCM ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module)
 
-o SC112 + Karl Brokstad’s Z80 22c module(or any Z80 board) + Memory Module(32KB EPROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O)
+o SC112 + Karl Brokstad’s Z80 22c module(or any Z80 board) + Memory Module(32KB ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O)
 
 o SC112 + Karl Brokstad’s Z80 22c module(or any Z80 board) + 512KB RAM/ROM Memory Module + SC110(CTC, SIO) (+ Digital I/O) 
 
