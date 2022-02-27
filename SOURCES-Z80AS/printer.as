@@ -28,7 +28,7 @@ ENDIF
 BUSY            equ     0               ;11
 BUSYMask        equ     00000001B
 ;BIT1 (IN) = ACK
-nAck            equ     1               ;7
+nAck            equ     1               ;10
 nAckMask        equ     00000010B
 ;BIT2 (OUT) = STROBE
 nStrobe         equ     2               ;1
