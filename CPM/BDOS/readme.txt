@@ -1,3 +1,5 @@
 ONLY FOR RC2014'S WITH CONFIGURATIONS USING CF 64 MB
 
 BDOS + BIOS for a CP/M that loads at 0DA00H
+
+To be assembled using Z80AS
