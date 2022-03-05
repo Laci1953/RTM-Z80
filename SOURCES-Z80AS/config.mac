@@ -1,0 +1,205 @@
+;
+;	Copyright (C) 2021 by Ladislau Szilagyi
+;
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 1	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 1	;1=RC2014 Digital I/O module is used
+CMD		equ 1	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 1	;1=Support for async communications I/O
+SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM)
+M512		equ 1	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 1	;1=BDOS disk file support
+LPT		equ 1	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 1	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 0	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+;
+;	for MM or SC108, if ROM then set BOOT_CODE=1
+;	for M512, set ROM=1 and BOOT_CODE=0
+;
+Z80SIM_CHECK    equ 0   ;1=check if CP/M executed on Z80SIM
+;
+LPT_CH_P_S	equ 350	;Characters per second for Parallel Printer
+;
+;	WARNING : if SIM=0 and WATSON=1 ==> RAM128 must be set to 1
+;		(on RC2014, Watson needs 128 KB RAM)
+;
+NODEBUG		equ	1-DEBUG	
+NOSIM		equ	1-SIM
+NODIG_IO	equ	1-DIG_IO
+NOCMD		equ	1-CMD
+NORSTS		equ	1-RSTS
+NOWATSON	equ	1-WATSON
+NOC_LANG	equ	1-C_LANG
+NOIO_COMM	equ	1-IO_COMM
+NOROM		equ	1-ROM
+NOBOOT_CODE	equ	1-BOOT_CODE
+NORAM128K	equ	1-RAM128K
+NOBDOS		equ	1-BDOS
+NOM512		equ	1-M512
+NOEXTM512	equ	1-EXTM512
+;
+SIO_RING	equ	NOSIM .and. IO_COMM
+NOSIO_RING	equ	1-SIO_RING
+;
+;TRIGGERS	equ 0	;Digital I/O module triggers: 1=ON,0=OFF (in this version, MUST BE SET to 0)
+;
+;	Version
+;
+V_M	equ	2
+V_m	equ	3
+;
+;Memory map for CP/M version
+;
+;	0100H - 7B00H	sys code & data, apps code & data
+;	7B00H - 7D00H	HEX loader buffers
+;	7D00H - 7E00H	CleanReqB
+;	7E00H - 7F00H	SIO receive buffer
+;	7F00H - 8000H	Tasks vectors, sys data
+;	8000H - 9FFFH	Dynamic Memory
+;
+;Memory map for RC2014 
+;
+;	0000H - 0100H	RSTs, sys code
+;	0100H - D000H	INTs vector, sys code, apps code & read-only data
+;	D000H - D100H	BSS: CleanReqB
+;	D100H - D200H	BSS: SIO receive buffer
+;	D200H - D400H	BSS: HEX loader buffers
+;	D400H - DF00H	BSS: Watson pointers, sys & apps read-write data
+;	DF00H - DFE3H	BSS: low - up routines (echo in Upper RAM)
+;	DFE3H - DFE8H	BSS: RTM/Z80 exit code
+;	DFE8H - E000H	BSS: regs & PC for breakpoint
+;	E000H - FFFFH	Dynamic Memory
+;
+;Memory map for RC2014 512KB RAM/ROM + EXTM512
+;
+;	0000H - 0100H	RSTs, sys code
+;	0100H - 4000H	sys code
+;	4000H - 8000H	ROM overlays (app code & read-only data)
+;	8000H - 8100H	BSS: CleanReqB
+;	8100H - 8200H	BSS: SIO receive buffer
+;	8200H - 8400H	BSS: HEX loader buffers
+;	8400H - A000H	BSS: sys, app read/write data
+;	A000H - BFFFH	Dynamic Memory
+;	C000H - FFFFH	512KB Extended Dynamic Memory
+;
+;       I/O opcodes
+;
+IO_IDLE         equ     0	;incoming input stored in SIO ring buffer
+IO_WRITE        equ     1	;incoming input NOT stored in SIO ring buffer
+IO_READ         equ     2       ;with echo, <CR> terminates read, null appended
+IO_RAW_WRITE	equ	4	;incoming input stored in SIO ring buffer
+IO_RAW_READ     equ     8       ;without echo, uses SIO receive buffer, timeout 
+;
+;       CTC ports (as in the RC2014 SIO/2 + CTCModule For RC2014)
+;
+CTC_0   equ     88H
+CTC_1   equ     89H
+CTC_2   equ     8AH
+CTC_3   equ     8BH
+;
+;       SIO Ports (as in the RC2014 SIO/2 + CTCModule For RC2014)
+;
+SIO_A_C equ     80H
+SIO_A_D equ     81H
+SIO_B_C equ     82H
+SIO_B_D equ     83H
+;
+;	PIO Ports (as in the RC2014 PIO Module)
+;
+PIO_A_D	equ	68H
+PIO_B_D	equ	69H
+PIO_A_C	equ	6AH
+PIO_B_C	equ	6BH
+;
+BMEM_SIZE	equ	2000H	
+;
+B_H_SIZE	equ	6	;sizeof(bElement)
+;
+IF	SIM
+BMEM_BASE	equ	08000H	;MUST be multiple of 0x2000
+ELSE
+IF	EXTM512
+BMEM_BASE	equ	0A000H	;MUST be multiple of 0x2000 
+Buf16K		equ	0C000H	;address of 16KB dynamic memory bank
+ELSE
+BMEM_BASE	equ	0E000H	;MUST be multiple of 0x2000 
+ENDIF	;EXTM512
+ENDIF	;SIM
+;
+IF	ROM
+_main	equ	2800H		; !!! Set it according to the RTM/Z80 size 
+ENDIF
+;
+IF	SIM
+
+MACRO	SET_LEDS	value
+ENDM
+
+MACRO	OUT_LEDS	bitnr
+ENDM
+
+MACRO	TOGGLE_LEDS	bitnr
+ENDM
+
+;MACRO	TEST_TRIGGER	bitnr
+;ENDM
+
+ENDIF
+;
+
+IF	SIM
+TICS_PER_SEC	equ	100
+ELSE
+TICS_PER_SEC	equ	200
+ENDIF
+
+;
+;	Addresses of RAM BSS routines
+;
+UP_TO_LOW_6W	equ	0DF4DH
+UP_TO_LOW_4B	equ	0DF7CH
+LOW_TO_UP_6W	equ	0DF91H
+LOW_TO_UP_4B	equ	0DFC7H
+RTM_EXIT	equ	0DFE3H
+;
+;	Address of Registers saved after a breakpoint
+;	order: AF,BC,DE,HL,AF',BC',DE',HL',IX,IY,SP,PC
+;
+_PC	equ	0DFFEH
+_REGS	equ	0DFE8H
+
+IF	EXTM512
+STARTUP_SP	equ	0A000H
+ELSE
+STARTUP_SP	equ	0E000H
+ENDIF
+
+MACRO	PUSH_REGS
+	push	af
+	push	hl
+	push	de
+	push	bc
+	push	ix
+	push	iy
+ENDM
+
+MACRO	POP_REGS
+	pop	iy
+	pop	ix
+	pop	bc
+	pop	de
+	pop	hl
+	pop	af
+ENDM
+
