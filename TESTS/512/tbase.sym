@@ -1,0 +1,7 @@
+1317 _Balloc
+065A _RunTask512
+08F0 _StopTask
+0B0E _CON_Write
+07A7 _IncTaskStack
+09A4 _GetCrtTask
+23B4 _strlen
