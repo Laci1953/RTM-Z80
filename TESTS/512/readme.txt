@@ -47,6 +47,8 @@ So, we built T1 to be stored at 4000H and executed at 4000H, and T2 to be stored
 
 As a final step, we burn the T1ROM.HEX & T2ROM.HEX, after the CP/M booter (the 512KB EPROM allways has as the first 16KB bank the CP/M booter...).
 
+TROM.HEX is the file to be burned, in case of an RC2014 provided with an 64MB CF an a SIO serial.
+
 Now, we can execute the application, simply by executing T.COM:
 
 >T<CR>
