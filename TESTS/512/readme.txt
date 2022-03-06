@@ -53,5 +53,5 @@ Now, we can execute the application, simply by executing T.COM:
 
 >T<CR>
 
-TALLO512.C and TEST512.C are examples of how to use RTM/Z80 512KB dynamic memory.
+Also in this folder you may find TALLO512.C and TEST512.C; they are examples of how to use RTM/Z80 512KB dynamic memory.
 
