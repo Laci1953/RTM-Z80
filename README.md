@@ -21,3 +21,4 @@ For all other hardware, the I/O ports and interrupt levels must be set "by hand"
 
 The only mandatory hardware requirement is the support of Z80 Interrupt Mode 2.
 
+NOTE: CPM folder was moved to https://github.com/Laci1953/RC2014-CPM
