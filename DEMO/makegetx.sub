@@ -1,0 +1,6 @@
+xsub
+c -v -c -o getxfile.c
+z80as -j filex
+link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -ogetxfile.com \
+cpmboot.obj getxfile.obj filex.obj rt.lib libc.lib
