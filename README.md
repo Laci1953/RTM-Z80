@@ -3,7 +3,7 @@ RTM/Z80 is a multitasking kernel, built for Z80 based computers, written in Z80 
 
 It is intended to be a simple and easy to use learning tool, for those who want to understand the tips and tricks of the multitasking software systems.
 
-Current version is 2.4
+Current version is 2.4 
 
 RTM/Z80 will run, after setting the appropriate system parameters, on the following environments:
 
