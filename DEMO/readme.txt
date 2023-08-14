@@ -1,7 +1,7 @@
 Demo programs
 -------------
 
-New in v2.4: getxfile & putxfile implement the XMODEM protocol.
+New in v2.4: getxfile & putxfile implement the XMODEM protocol (SIO, 115200 bauds).
 
 They can be used to move files from/to RC2014 - from/to the computer/laptop that runs the terminal (e.g. TeraTerm).
 
