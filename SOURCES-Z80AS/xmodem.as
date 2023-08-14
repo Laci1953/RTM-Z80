@@ -78,6 +78,9 @@ packet:	 	defs 	1	;SOH
 data:	 	defs	128	;data*128,
 EOTmark: 	defs	1 	;chksum / EOT mark (not zero==EOT)
 
+packcnt:	defs	1
+PACK_GRP	equ	64
+
 	psect	text
 ;
 ;	Receive packets
@@ -153,6 +156,10 @@ ENDIF
 	ld 	(pktNo),a
 	ld 	a,255-1		;Also store the 1-complement of it
 	ld 	(pktNo1c),a
+
+	ld	a,PACK_GRP	;Init pack counter
+	ld	(packcnt),a
+
 GetNewPacket:
 	ld	a,MAX_RETRY_COUNT
 	ld	(retrycnt),a
@@ -161,7 +168,7 @@ Retry:
 	ld	de,(Sem)
 	ld	c,PACK_LEN
 	ld	iy,(Timer)
-	ld	ix,2000		;10 secs
+	ld	ix,20		;100 ms
 	call	__ReadB
 	ld	hl,(Sem)
 	call	__Wait
@@ -221,14 +228,21 @@ csloop:	add	a,(hl)		;Just add up the bytes
 	inc 	(hl)
 	ld	hl,pktNo1c
 	dec	(hl)
-				;wait 10 msec
+				;wait ...
 	ld	hl,(Timer)
 	ld	de,(Sem)
-	ld	bc,20		;10 msec
+	ld	bc,10		;50 ms
+	ld	a,(packcnt)
+	dec	a
+	jr	nz,1f
+	ld	bc,200		;1 sec
+	ld	a,PACK_GRP
+1:
+	ld	(packcnt),a
 	xor	a		;no repeat
 	call	__StartTimer
 	ld	hl,(Sem)
-	call	__Wait		;wait 10 msecs
+	call	__Wait		;wait
 	ld 	a,ACK		;Tell uploader that last packet was OK
 	call	SendBack1B
 	jp	GetNewPacket
@@ -335,7 +349,7 @@ __XmSend:
 	ld	(Timer),hl
 	call	__Reset_RWB	;reset SIO ring
 				;wait for NAK from the receiver
-	ld	ix,12000	;60 sec
+	ld	ix,6000		;30 sec timeout
 	call	Get1B
 	jp	nz,FailureS	;if no response, failure
 	cp	NAK
@@ -372,7 +386,7 @@ GotNAK:
 	ld	hl,(Sem)
 	call	__Wait
 				;read response (1 byte)
-	ld	ix,12000	;60 secs
+	ld	ix,20		;100 ms timeout
 	call	Get1B
 	jp	nz,FailureS	;no byte received, timeout
  	cp 	CAN		;Downloader wants to abort transfer?
@@ -391,11 +405,14 @@ GotNAK:
 DoneS:
 	ld	a,EOT		;tell receiver we're done
 	call	SendBack1B
-	ld	ix,2000		;10 sec
+	ld	ix,2000		;10 s timeout
 	call	Get1B
-	jr	nz,FailureS	;if no response, failure
-	cp	ACK
-	jr	nz,FailureS	;if response not ACK, failure
+;
+;	it seems TeraTerm sends a NAK !!!
+;
+;	jr	nz,FailureS	;if no response, failure
+;	cp	ACK
+;	jr	nz,FailureS	;if response not ACK, failure
 	call	Drop
 	ld	hl,XM_OK	;success
 	ret
