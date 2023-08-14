@@ -28,7 +28,7 @@ struct TaskCB {
 short	GetHost(void);
 short	IncTaskStack(short size);
 short	StackLeft(void* tcb);
-short	StartUp(short stack_size, void* StartAddr, short Prio);
+struct TaskCB*	StartUp(short stack_size, void* StartAddr, short Prio);
 void	ShutDown(void);
 void*	GetTaskByID(short id);
 short	GetTaskSts(void* TCB);
