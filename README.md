@@ -21,4 +21,4 @@ For all other hardware, the I/O ports and interrupt levels must be set "by hand"
 
 The only mandatory hardware requirement is the support of Z80 Interrupt Mode 2.
 
-New in v2.4 : see DEMO folder for getxfile, putxfile
+New in v2.4 : see DEMO folder for getxfile, putxfile (XMODEM compatible)
