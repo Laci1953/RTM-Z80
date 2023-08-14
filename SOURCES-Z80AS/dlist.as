@@ -97,6 +97,9 @@ __AddToL:
         ld      a,d
         ld      (bc),a
         dec     c              ;Last.Next=New
+IF	SIO_RING
+	call	GetSIOChars
+ENDIF
         ld      l,e
         ld      h,d             ;return HL=New
         inc     e
@@ -181,6 +184,11 @@ __NextFromL:
 ;	IX,IY not affected
 ;
 __RemoveFromL:
+IF	SIO_RING
+	ex	de,hl
+	call	GetSIOChars
+	ex	de,hl
+ENDIF
         ld      e,(hl)
         inc     l
         ld      d,(hl)
