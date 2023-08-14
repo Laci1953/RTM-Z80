@@ -328,6 +328,11 @@ QuickSendMail:
 	ex	de,hl		;DE=bElement.data pointer = destination
 	pop	hl		;HL=bElement allocated
 	ex	(sp),hl		;HL=Msg=source, bElement allocated on stack
+IF	SIO_RING
+	ex	de,hl
+	call	GetSIOChars
+	ex	de,hl
+ENDIF
 	ldir			;memcpy(DE=destination, HL=source, BC=MsgSize)
 IF	SIO_RING
 	call	GetSIOChars
@@ -440,6 +445,11 @@ ENDIF
 	ld	l,a		;HL=bElement.data pointer (source), CARRY=0
 	pop	bc		;BC=MsgSize
 	push	hl		;keep bElement.data pointer on stack
+IF	SIO_RING
+	ex	de,hl
+	call	GetSIOChars
+	ex	de,hl
+ENDIF
 	ldir			;memcpy(DE=destination, HL=source, BC=MsgSize)
 IF	SIO_RING
 	call	GetSIOChars
