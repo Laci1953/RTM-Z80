@@ -6,11 +6,13 @@ New in v2.4: getxfile & putxfile implement the XMODEM protocol.
 They can be used to move files from/to RC2014 - from/to the computer/laptop that runs the terminal (e.g. TeraTerm).
 
 - getxfile copies files from the laptop to RC2014
-- putfile copies files from RC2014 to the laptop
+- putxfile copies files from RC2014 to the laptop
 
 getxfile.com & putxfile.com can be executed in CP/M; when started, RTM/Z80 is booted and a multitasking application is launched.
 
 They perform all the serial communication I/O, at 115200 bauds, on interrupts.
+
+They are configured to be used on RC2014's provided with SC108 + SC110.
 
 Example of use:
 --------------
