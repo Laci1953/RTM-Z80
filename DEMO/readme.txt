@@ -10,6 +10,9 @@ They can be used to move files from/to RC2014 - from/to the computer/laptop that
 
 getxfile.com & putxfile.com can be executed in CP/M; when started, RTM/Z80 is booted and a multitasking application is launched.
 
+Of course, you must use in TeraTerm the command : File > Transfer > XMODEM > Send or Receive, after being notified 
+( you receive a message like: "...you have 30 secs to initiate sending the file via XMODEM..." )
+
 They perform all the serial communication I/O, at 115200 bauds, on interrupts.
 
 They are configured to be used on RC2014's provided with SC108 + SC110.
