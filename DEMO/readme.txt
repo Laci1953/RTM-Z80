@@ -96,7 +96,7 @@ and the RT.LIB library:
 
 >submit makelib
 
-Then, to build the executables:
+Then, to build the executables: (you need the following files: filex.as, getxfile.c, putxfile.c )
 
 >submit makegetx
 >submit makeputx
