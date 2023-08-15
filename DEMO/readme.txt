@@ -101,3 +101,5 @@ Then, to build the executables: (you need the following files: filex.as, getxfil
 >submit makegetx
 >submit makeputx
 
+Now, the executables are ready to be used...
+
