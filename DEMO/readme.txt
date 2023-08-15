@@ -62,3 +62,42 @@ Press 'y/Y' to send another file:n
 Small Computer Monitor - S3
 *
 
+How to configure RTM/Z80 to use getxfile & putxfile
+---------------------------------------------------
+
+In config.mac, use the following settings:
+
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		    equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 1	;1=RC2014 Digital I/O module is used    ( IN CASE YOU HAVE THE DIGITAL MODULE ! )
+CMD		    equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 1	;1=Support for async communications I/O
+SC108		equ 1	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		    equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM)
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 1	;1=BDOS disk file support
+LPT		    equ 0	;1=Parallel Printer (Compatibility mode)
+DYNM512		equ 0	;1=Extended dynamic memory support for M512 (set-it to 0 if M512=0)
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 1	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		    equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+Then, build RTM/Z80:
+
+>submit make
+
+and the RT.LIB library:
+
+>submit makelib
+
+Then, to build the executables:
+
+>submit makegetx
+>submit makeputx
+
