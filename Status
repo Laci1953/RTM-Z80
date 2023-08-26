@@ -6,3 +6,5 @@ Added parallel printer interface
 Added support for 64KB Upper bank RAM access for 128KB RAM configurations (SC108, 128KB memory module)
 Added version for 512KB RAM/ROM memory module
 Added extended 512KB dynamic memory for 512KB RAM/ROM memory module
+Added Z80ALL version
+Added support for KIO
