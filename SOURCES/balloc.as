@@ -501,6 +501,11 @@ ENDIF
 ;	IX,IY not affected
 ;
 __Balloc:
+
+IF	SYSSTS
+	SaveMarkLen
+ENDIF
+
 ;CrtSize=Size
 	ld	b,c		;CrtSize=Size
 ;-----------------------------------------------------------------------------	
@@ -531,7 +536,7 @@ IF	RSTS
 ELSE
 	call	__GetFromL	;HL=GetFromL(CrtL)
 ENDIF
-	jr	z,7f
+	jp	z,7f
 				;
 ;  if (Element) {
 				;HL=Element
@@ -553,8 +558,13 @@ ENDIF
 	cp	b	
 ;      return Element
 	jr	nz,6f
+
+IF	SYSSTS
+	DynMarkOn
+ENDIF
+
 	ex	de,hl		;HL=Element
-	inc	a		;Z=0
+	or	h		;Z=0
 	ret			;return HL=Element
 6:	
 ;    do {
@@ -611,6 +621,11 @@ ENDIF
 IF	SIO_RING
 	call	GetSIOChars	;check pending SIO inputs
 ENDIF
+
+IF	SYSSTS
+	DynMarkOn
+ENDIF
+
 	or	d		;Z=0
 	ex	de,hl		;HL=Element
 	ret			;return HL=Element	
@@ -623,7 +638,7 @@ ENDIF
 	inc	c		;++CrtSize
 	ld	a,c
 	cp	MAX_SIZE+1
-	jr	nz,5b
+	jp	nz,5b
 ;
 IF	SIO_RING
 	call	GetSIOChars	;check pending SIO inputs
@@ -707,6 +722,12 @@ IF	NODEBUG
 	ld	c,(hl)		;C=CrtSize=Size
 ENDIF
 ;-----------------------------------------------------------------------------	
+
+IF	SYSSTS
+	SaveMarkLen
+	DynMarkOff
+ENDIF
+
 	ld	b,0		;B=0
 ;CrtSize=Size
 ;while (CrtSize < MAX_SIZE) {
