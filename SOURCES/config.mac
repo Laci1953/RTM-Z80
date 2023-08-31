@@ -10,15 +10,16 @@ CMD		equ 0	;1=CON CMD task is included
 RSTS		equ 1	;1=use RST for list routines (not for SIM)
 WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
 C_LANG		equ 1	;1=Support for C language API
-IO_COMM		equ 0	;1=Support for async communications I/O
+IO_COMM		equ 1	;1=Support for async communications I/O
 SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
 MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM)
 M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
-BDOS		equ 0	;1=BDOS disk file support
+BDOS		equ 1	;1=BDOS disk file support
 LPT		equ 0	;1=Parallel Printer (Compatibility mode)
 EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
 Z80ALL		equ 1	;1=Runs on Z80ALL
 KIO		equ 1	;1=KIO is used, 0:SC110 is used
+SYSSTS		equ 1	;1=System status on VGA screen for Z80ALL
 ;
 ;	ROM/RAM options (only if SIM=0)
 ;
@@ -233,4 +234,247 @@ MACRO	POP_REGS
 	pop	hl
 	pop	af
 ENDM
+
+IF	SYSSTS
+
+StsROW		equ	23
+PriCOL		equ	7
+RunCOL		equ	22
+WaitCOL		equ	30
+
+	GLOBAL	MarkLen, TaskCnt, Bin2Hex, DisplaySysScr, CrtLocate
+
+	MACRO	DynMarkOn
+;
+;	Type dynamic memory block mark
+;	DE=pointer of dynamic memory buffer
+;	DE not affected
+;
+	ld	h,d
+	ld	l,e		;HL=DE
+	or	a		;CARRY=0
+	ld	bc,BMEM_BASE
+	sbc	hl,bc		;HL=offset in dynamic memory buffer 000xxxxx xxxx0000
+				;build cursor 
+	ld	c,1
+	srl	h
+	rr	l
+	srl	h
+	rr	l
+	srl	h
+	rr	l
+	srl	h
+	rr	l
+	bit	0,h
+	jr	z,111f
+	inc	c
+111:
+	ld	b,l		;BC=cursor
+	ld	a,(MarkLen)
+	ld	l,a
+	ld	a,' ' + 80H
+222:				;type mark
+	out	(c),a
+	inc	b
+	dec	l
+	jr	nz,222b
+;
+IF	SIO_RING
+	call	GetSIOChars
+ENDIF
+
+	ENDM
+
+	MACRO	DynMarkOff
+;
+;	Erase dynamic memory block mark
+;	DE=pointer of dynamic memory buffer
+;	BC,DE not affected
+;
+	push	bc		;save BC
+
+	ld	h,d
+	ld	l,e		;HL=DE
+	or	a		;CARRY=0
+	ld	bc,BMEM_BASE
+	sbc	hl,bc		;HL=offset in dynamic memory buffer 000xxxxx xxxx0000
+				;build cursor 
+	ld	c,1
+	srl	h
+	rr	l
+	srl	h
+	rr	l
+	srl	h
+	rr	l
+	srl	h
+	rr	l
+	bit	0,h
+	jr	z,333f
+	inc	c
+333:
+	ld	b,l		;BC=cursor
+	ld	a,(MarkLen)
+	ld	l,a
+	ld	a,' '
+444:				;erase mark
+	out	(c),a
+	inc	b
+	dec	l
+	jr	nz,444b
+
+	pop	bc		;restore BC
+;
+IF	SIO_RING
+	call	GetSIOChars
+ENDIF
+
+	ENDM
+
+	MACRO	SaveMarkLen
+;
+;	Save dynamic memory marks length
+;	C=block size (0,1...)
+;
+	ld	b,c		;save B=C
+	ld	a,1
+	inc	c
+1:	dec	c
+	jr	z,2f
+	add	a,a
+	jr	1b
+2:
+	ld	(MarkLen),a
+	ld	c,b		;restore C
+
+	ENDM
+;
+CURSOR_OFF	equ	24
+
+	MACRO	AddTask
+;
+;	BC=TCB
+;	BC not affected
+;
+	push	bc		;save TCB
+
+	ld	hl,TaskCnt
+	ld	a,StsROW
+	add	(hl)		;A=row in screen
+	inc	(hl)
+
+	ld	hl,CURSOR_OFF
+	add	hl,bc
+
+	push	hl		;HL=where to store the cursor
+
+	ld	hl,PRI_OFF
+	add	hl,bc
+
+	ld	c,a		;C=row in screen
+	ld	b,PriCOL	;B=col in screen
+
+	call	CrtLocate	;BC=cursor (B=col,C=row)
+
+	ld	a,(hl)		;get task priority
+	call	Bin2Hex		;D=A=high, E=low
+
+	out	(c),a		;high
+	inc	b
+	ld	a,e
+	out	(c),a		;low
+
+	ld	a,14		;skip to Running Status's col 
+	add	a,b
+	ld	b,a		;B=col Running Status
+
+	pop	hl		;HL=where to store the cursor
+	ld	(hl),c		;store the "Running Status" cursor
+	inc	hl
+	ld	(hl),b
+
+	pop	bc		;Restore TCB
+
+	ENDM
+
+	MACRO	OffRun
+;
+;	HL=TCB
+;	HL,DE not affected
+;
+	push	de		;save DE
+	ld	e,l
+	ld	d,h		;DE=HL
+	ld	bc,CURSOR_OFF
+	add	hl,bc
+	ld	c,(hl)		;load cursor
+	inc	hl
+	ld	b,(hl)
+	ld	a,' '
+	out	(c),a
+	ex	de,hl		;restore HL
+	pop	de		;restore DE
+
+	ENDM
+
+	MACRO	OnRun
+;
+;	HL=TCB
+;	HL not affected
+;
+	ld	e,l
+	ld	d,h		;save DE=HL
+	ld	bc,CURSOR_OFF
+	add	hl,bc
+	ld	c,(hl)		;load cursor
+	inc	hl
+	ld	b,(hl)
+	ld	a,' ' + 80H
+	out	(c),a
+	ex	de,hl		;restore HL
+
+	ENDM
+
+	MACRO	OffWait
+;
+;	HL=TCB
+;	HL not affected
+;
+	ld	e,l
+	ld	d,h		;save DE=HL
+	ld	bc,CURSOR_OFF
+	add	hl,bc
+	ld	c,(hl)		;load cursor
+	inc	hl
+	ld	b,(hl)
+	ld	a,8		;skip to Waiting Status col
+	add	a,b
+	ld	b,a
+	ld	a,' '
+	out	(c),a
+	ex	de,hl		;restore HL
+
+	ENDM
+
+	MACRO	OnWait
+;
+;	HL=TCB
+;	HL not affected
+;
+	ld	e,l
+	ld	d,h		;save DE=HL
+	ld	bc,CURSOR_OFF
+	add	hl,bc
+	ld	c,(hl)		;load cursor
+	inc	hl
+	ld	b,(hl)
+	ld	a,8		;skip to Waiting Status col
+	add	a,b
+	ld	b,a
+	ld	a,' ' + 80H
+	out	(c),a
+	ex	de,hl		;restore HL
+
+	ENDM
+
+ENDIF
 
