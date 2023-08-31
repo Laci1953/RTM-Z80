@@ -19,3 +19,4 @@ z80as bios
 z80as printer
 z80as -j ballo512
 z80as cpmboot
+z80as -j vga
