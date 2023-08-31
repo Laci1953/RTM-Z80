@@ -1063,6 +1063,11 @@ ELSE
 ENDIF
 	pop	de		;DE = Sem list header pointer, Z=0 & HL=first TCB or Z=1 & HL=0
 	jr	z,1f
+
+IF	SYSSTS
+	OffWait
+ENDIF
+
 	push	hl		;HL=TCB
 	ld	a,WAITSEM_OFF
 	add	a,l
@@ -1249,6 +1254,11 @@ IF	SIO_RING
 ENDIF
 	ex	de,hl		;HL=SemAddr
 	ex	(sp),hl		;HL=TCB, SemAddr on stack
+
+IF	SYSSTS
+	OnWait
+ENDIF
+
 IF	RSTS
 	RST	32
 ELSE
@@ -1280,6 +1290,11 @@ ENDIF
 	add	hl,sp
 	ex	de,hl		;DE = current SP 
 	ld	hl,(_RunningTask)
+
+IF	SYSSTS
+	OffRun
+ENDIF
+
 	ld	a,SP_OFF	;save SP of the running task	
 	add	a,l
 	ld	l,a		;HL= pointer to Running Task's StackPointer
@@ -1305,6 +1320,11 @@ IF	SIO_RING
 	ex	de,hl
 ENDIF
 	ld	(_RunningTask),hl;save current TCB
+
+IF	SYSSTS
+	OnRun
+ENDIF
+
 	ld	d,h
 	ld	e,l		;DE=crt TCB
 	ld	a,SP_OFF
@@ -1601,6 +1621,12 @@ IF	EXTM512
 	call	__Balloc
 	call	__Init512Banks	;init 512KB dynamic memory data structures
 ENDIF
+
+IF	SYSSTS
+	call	DisplaySysScr
+	ld	bc,TCB_Default
+	AddTask
+ENDIF
 				;prepare params for RunTask CON driver
 	ld	de,250		;E=CON driver priority,D=0(RAM resident)
 	ld	hl,CON_Driver_IO;CON driver StartAddr
@@ -1870,6 +1896,11 @@ ENDIF
 IF	SIO_RING
 	call	GetSIOChars
 ENDIF
+
+IF	SYSSTS
+	AddTask
+ENDIF
+
 	ld	hl,_TasksH	;HL=Active tasks list header
 	jp	__AddTask	;insert BC=TCB into active tasks list, HL=TCB returned, Z=0
 ;
