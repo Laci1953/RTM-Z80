@@ -2,4 +2,4 @@ era rt.lib
 libr r rt.lib rtsys.obj 
 libr r rt.lib cmd.obj snapshot.obj hexload.obj io.obj printer.obj
 libr r rt.lib xmodem.obj queue.obj rtclk.obj mailbox.obj 
-libr r rt.lib balloc.obj dlist.obj util.obj csv.obj bdos.obj bios.obj
+libr r rt.lib balloc.obj dlist.obj util.obj csv.obj bdos.obj bios.obj vga.obj
