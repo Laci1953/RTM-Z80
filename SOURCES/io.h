@@ -8,3 +8,7 @@ short CTRL_C(void);
 short XmRecv(struct MailBox* MB);
 short XmSend(struct MailBox* MB);
 short LPT_Print(char* buf, short len);
+void CrtClear(void);
+void CrtLocate(int col, int row);
+void OutStringVGA(char* p);
+void OutCharVGA(char);
