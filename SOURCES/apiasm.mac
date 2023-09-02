@@ -170,3 +170,10 @@ ENDIF
 ENDIF
 
 ENDIF
+
+IF	Z80ALL
+	GLOBAL	__CrtClear, __CrtLocate, __OutCharVGA, __OutStringVGA
+IF	C_LANG
+ENDIF
+	GLOBAL	_CrtClear, _CrtLocate, _OutCharVGA, _OutStringVGA
+ENDIF
