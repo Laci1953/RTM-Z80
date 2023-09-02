@@ -1,4 +1,4 @@
-# RTM-Z80 - last update on 31 August 2023
+# RTM-Z80 - last update on 2 Sept 2023
 RTM/Z80 is a multitasking kernel, built for Z80 based computers, written in Z80 assembly language, providing its users with an Application Programming Interface (API) accessible from programs written in the C language and the Z80 assembly language.
 
 It is intended to be a simple and easy to use learning tool, for those who want to understand the tips and tricks of the multitasking software systems.
@@ -23,4 +23,4 @@ The only mandatory hardware requirement is the support of Z80 Interrupt Mode 2.
 
 New in v2.4 : see DEMO folder for getxfile, putxfile (XMODEM compatible)
 
-New in v2.5 : KIO support added, Z80ALL version added, VGA System status display added for Z80ALL
+New in v2.5 : KIO support added, Z80ALL version added, VGA display support added for Z80ALL, VGA System status display added for Z80ALL
