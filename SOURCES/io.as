@@ -165,6 +165,7 @@ ENDIF
         GLOBAL  _CON_Write
         GLOBAL  _CON_Read
 	GLOBAL	_CTRL_C
+	GLOBAL	_CON_Status
 ENDIF
 IF	IO_COMM
         GLOBAL  __WriteB
@@ -187,6 +188,7 @@ ENDIF
         GLOBAL  CON_IO_WS
         GLOBAL  CON_Driver_IO
 	GLOBAL	__CTRL_C
+	GLOBAL	__CON_Status
         GLOBAL  __CON_Write
         GLOBAL  __CON_Read
         GLOBAL  __InitSem
@@ -468,8 +470,32 @@ __KillReqIO:
 	inc	hl
 	ld	(hl),a
 	ret
-;									C_LANG
-IF    C_LANG
+;
+;	Return zero if ring buffer empty, else return first available char
+;
+IF	C_LANG
+
+;char CON_Status(void)
+;
+_CON_Status:
+
+ENDIF
+;
+__CON_Status:
+	di
+	ld	hl,(SIO_RP)
+	ld	a,(SIO_WP)
+	sub	l		;compare pointers
+	jr	z,nope
+	ld	a,(hl)		;get char
+	inc	l		;update read pointer
+	ld	(SIO_RP),hl
+nope:
+	ei
+	ld	l,a
+	ret
+
+IF    	C_LANG
 ;
 ;	CTRL_C
 ;
@@ -550,7 +576,7 @@ _WriteB:
         jr      _CON_IO
 ;
 ENDIF
-;									C_LANG
+
 ;       CON_Read internal
 ;
 ;       HL=buf, DE=Sem, C=len, IY=timer
