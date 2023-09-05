@@ -120,9 +120,9 @@ nibble2hex:			;A = bin
 ENDIF
 ;---------------------------------------------------------------------------------------SYSSTS
 
-	GLOBAL	__OutCharVGA, __OutStringVGA, __CrtClear, __CrtLocate
+	GLOBAL	__OutCharVGA, __OutStringVGA, __CrtClear, __CrtLocate, __InCharVGA
 IF	C_LANG
-	GLOBAL	_OutCharVGA, _OutStringVGA, _CrtClear, _CrtLocate
+	GLOBAL	_OutCharVGA, _OutStringVGA, _CrtClear, _CrtLocate, _InCharVGA
 ENDIF
 
 	psect	text
@@ -212,30 +212,74 @@ ENDIF
 ;	HL=pointer of string
 ;
 __OutStringVGA:
+	ld	d,1		;affectCursor
 	ld	a,(hl)
 	or	a
 	ret	z
-	call	__OutCharVGA
+	call	OutChar
 	inc	hl
 	jr	__OutStringVGA
+;
+;	Read character from VGA
+;
+IF	C_LANG
+;char	InCharVGA(int col, int row);
+;
+_InCharVGA:
+	ld	hl,2
+	add	hl,sp
+	ld	b,(hl)		;B=col
+	inc	hl
+	inc	hl
+	ld	c,(hl)		;C=row
+ENDIF
+;
+;	B=col, C=row
+;	returns A = L = char
+;
+__InCharVGA:
+	call	__CrtLocate
+	in	a,(c)
+	ld	l,a
+	ret
 ;
 ;	Write character to VGA (VT52 compatible)
 ;
 IF	C_LANG
-;void	OutCharVGA(char);
+;void	OutCharVGA(int col, int row, char ch);
 ;
 _OutCharVGA:
 	ld	hl,2
 	add	hl,sp
-	ld	a,(hl)
+	ld	b,(hl)		;B=col
+	inc	hl
+	inc	hl
+	ld	c,(hl)		;C=row
+	inc	hl
+	inc	hl
+	ld	e,(hl)		;E=char
 ENDIF
 ;
-;	A=char to be written on screen
-;	HL not affected
+;	E=char
+;	B=col, C=row
 ;
 __OutCharVGA:
+	call	__CrtLocate
+	ld	a,e		;A=char
+	ld	d,0		;cursor will not be affected
+;
+;	A=char to be written on screen
+;	D=0: just write-it, cursor will not be affected
+;	  1: write-it, interpret ESC seq & update cursor
+;	HL not affected
+;
+OutChar:
 	ld	bc,(Cursor)	;load cursor
-        ld      e,a             ;save it also in E
+        ld      e,a             ;save char in E
+	ld	a,d		;affectCursor?
+	or	a
+	jp	z,justOut
+				;yes
         ld      a,(fEscape)     ;get escape sequence flag
         cp      ESC
         jr      z,escapeSeq     ;branch if escape sequence started
@@ -511,6 +555,13 @@ blankline:
         jr      nz,blankline
         ld      b,192           ;exit the scrolling routine with cursor at beginning of last line
         jp      saveCursor
+;
+justOut:
+                                ;just write char, according to current video mode
+        ld      a,(fRev)	;apply reverse video flag
+        or      e               ;to char in E
+        out     (c),a           ;write out the character
+	ret
 ;
 ;-------------------------------------------------------------------------------
 
