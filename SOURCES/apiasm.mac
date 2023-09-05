@@ -41,6 +41,7 @@ IF	C_LANG
 	GLOBAL	_GetMail
 	GLOBAL	_CON_Write
 	GLOBAL  _CON_Read
+	GLOBAL	_CON_Status
 	GLOBAL	_CTRL_C
 	GLOBAL	_RoundRobinON
 	GLOBAL	_RoundRobinOFF
@@ -110,6 +111,7 @@ ENDIF
 	GLOBAL	__CON_Write
 	GLOBAL  __CON_Read
 	GLOBAL	__CTRL_C
+	GLOBAL	__CON_Status
 	GLOBAL	__RoundRobinON
 	GLOBAL	__RoundRobinOFF
 	GLOBAL  __MakeTimer
@@ -172,8 +174,8 @@ ENDIF
 ENDIF
 
 IF	Z80ALL
-	GLOBAL	__CrtClear, __CrtLocate, __OutCharVGA, __OutStringVGA
+	GLOBAL	__CrtClear, __CrtLocate, __OutCharVGA, __OutStringVGA, __InCharVGA
 IF	C_LANG
 ENDIF
-	GLOBAL	_CrtClear, _CrtLocate, _OutCharVGA, _OutStringVGA
+	GLOBAL	_CrtClear, _CrtLocate, _OutCharVGA, _OutStringVGA, _InCharVGA
 ENDIF
