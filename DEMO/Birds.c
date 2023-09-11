@@ -2,12 +2,9 @@
 
 Game 'Birds, eagle and the kite'
 
-Designed for RTM/Z80 - Z80ALL
+Designed for RTM/Z80
 as an example of a CP/M game running 
 on a Z80 multitasking operating system
-
-Accepts inputs from the TeraTerm console
-and displays the output on the VGA screen
 
 Build procedure:
 
@@ -16,8 +13,6 @@ Build procedure:
 Use the following settings in CONFIG.MAC:
 
 C_LANG equ 1
-(Z80ALL equ 1) for Z80ALL
-(KIO    equ 1) for Z80ALL
 
 then execute:
 
