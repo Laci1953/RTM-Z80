@@ -3,7 +3,7 @@ RTM/Z80 is a multitasking kernel, built for Z80 based computers, written in Z80 
 
 It is intended to be a simple and easy to use learning tool, for those who want to understand the tips and tricks of the multitasking software systems.
 
-Current version is 2.5 
+Current version is 2.6 
 
 RTM/Z80 will run, after setting the appropriate system parameters, on the following environments:
 
@@ -24,11 +24,14 @@ The only mandatory hardware requirement is the support of Z80 Interrupt Mode 2.
 New in v2.4 : see DEMO folder for getxfile, putxfile (XMODEM compatible)
 
 New in v2.5 : 
-KIO support added, 
+KIO support added
+
+New in v2.6 :
 Z80ALL version added, 
 VGA display support added for Z80ALL, 
 VGA System status display added for Z80ALL, 
 PS/2 keyboard support added for Z80ALL, 
 extra 2x32KB RAM support added for Z80ALL,
 real time clock DS1302 added for Z80ALL
+
 
