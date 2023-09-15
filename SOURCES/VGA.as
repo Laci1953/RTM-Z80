@@ -1,5 +1,7 @@
 ;
-;	Z80ALL VGA routines
+;	Copyright (C) 2023 by Ladislau Szilagyi
+;
+TITLE	Z80ALL VGA routines
 ;
 *Include config.mac
 
