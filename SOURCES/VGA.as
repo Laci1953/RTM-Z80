@@ -261,11 +261,9 @@ _OutCharVGA:
 	inc	hl
 	ld	e,(hl)		;E=char
 ENDIF
-;
 ;---------------------------------------------------------
 ;	Adapted from an original code written by Bill Shen
 ;---------------------------------------------------------
-;
 ;	E=char
 ;	B=col, C=row
 ;
