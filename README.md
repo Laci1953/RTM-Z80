@@ -23,4 +23,12 @@ The only mandatory hardware requirement is the support of Z80 Interrupt Mode 2.
 
 New in v2.4 : see DEMO folder for getxfile, putxfile (XMODEM compatible)
 
-New in v2.5 : KIO support added, Z80ALL version added, VGA display support added for Z80ALL, VGA System status display added for Z80ALL, PS/2 keyboard support added for Z80ALL, extra 2x32KB RAM support added for Z80ALL
+New in v2.5 : 
+KIO support added, 
+Z80ALL version added, 
+VGA display support added for Z80ALL, 
+VGA System status display added for Z80ALL, 
+PS/2 keyboard support added for Z80ALL, 
+extra 2x32KB RAM support added for Z80ALL,
+real time clock DS1302 added for Z80ALL
+
