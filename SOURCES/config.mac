@@ -62,7 +62,7 @@ NOSIO_RING	equ	1-SIO_RING
 ;	Version
 ;
 V_M	equ	2
-V_m	equ	5
+V_m	equ	6
 ;
 ;Memory map for CP/M version
 ;
