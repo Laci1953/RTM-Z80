@@ -7,17 +7,19 @@ Current version is 2.6
 
 RTM/Z80 will run, after setting the appropriate system parameters, on the following environments:
 
-• CP/M running under Udo Munk's Z80SIM Z80 simulator (e.g. on Windows, under CygWin)
+• Z80SIM Z80 simulator (e.g. on Windows, under CygWin)
 
-• RC2014 homebrew Z80 computer, with or without CP/M, using the following hardware configurations:
+• Z80ALL standalone Z80 computer
 
-o SC112 + SC108(Z80 + 32KB SCM ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module)
+• RC2014 homebrew Z80 computer, using the following hardware configuration options:
 
-o SC112 + any CPU Z80 board + Memory Module(32KB ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module)
+o SC108(Z80 + 32KB SCM ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module), or
 
-o SC112 + any CPU Z80 board + 512KB RAM+512KB ROM Memory Module + SC110(CTC, SIO) (+ Digital I/O module) 
+o any CPU Z80 board + Memory Module(32KB ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module), or
 
-For all other hardware, the I/O ports and interrupt levels must be set "by hand" (see manual, page 98: Porting RTM/Z80 to other hardware)
+o any CPU Z80 board + 512KB RAM+512KB ROM Memory Module + SC110(CTC, SIO) (+ Digital I/O module) 
+
+For all other hardware, the I/O ports and interrupt levels must be set in the source code (see manual, chapter Porting RTM/Z80 to other hardware)
 
 The only mandatory hardware requirement is the support of Z80 Interrupt Mode 2.
 
