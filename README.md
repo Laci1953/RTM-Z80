@@ -23,7 +23,7 @@ o any Z80 board + 512KB RAM+512KB ROM Memory Module + SC110(CTC+SIO)
 
 o SC706(Z80) + (SC707 / SC714 RAM) + ( SC716(SIO) + SC718(CTC) ) / SC725(CTC+SIO) 
 
-• any CPU Z80 board supporting IM2 + any 64KB RAM board + any CTC board + any SIO ( or KIO board ), where the I/O ports must be set in the source code (see manual, chapter Porting RTM/Z80 to other hardware)
+• any CPU Z80 board supporting IM2 + any 64KB RAM board + any CTC board + any SIO ( or KIO board ) (in this case, the I/O ports must be set in the source code, see manual, chapter Porting RTM/Z80 to other hardware)
 
 The mandatory hardware requirements: 64KB RAM, support of Z80 Interrupt Mode 2, CTC, SIO or KIO.   
 
