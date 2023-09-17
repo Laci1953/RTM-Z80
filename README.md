@@ -5,7 +5,7 @@ It is intended to be a simple and easy to use learning tool, for those who want 
 
 Current version is 2.6 
 
-RTM/Z80 will run, after setting the appropriate system parameters, on the following environments:
+RTM/Z80 can be used on the following environments:
 
 • Z80SIM Z80 simulator (e.g. on Windows, under CygWin)
 
@@ -13,19 +13,19 @@ RTM/Z80 will run, after setting the appropriate system parameters, on the follow
 
 • RC2014 homebrew Z80 computer, using the following hardware configuration options:
 
-o SC108(Z80 + 32KB SCM ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module), or
+o SC108(Z80 + 32KB SCM ROM + 2x64KB RAM) + SC110(CTC, SIO) , or
 
-o any CPU Z80 board + Memory Module(32KB ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ Digital I/O module), or
+o any Z80 board + 64/128KB RAM + SC110(CTC, SIO) , or
 
-o any CPU Z80 board + 512KB RAM+512KB ROM Memory Module + SC110(CTC, SIO) (+ Digital I/O module)
+o any Z80 board + 512KB RAM+512KB ROM Memory Module + SC110(CTC, SIO)
 
 • RCBUS based homebrew Z80 computer, using the following hardware configuration options:
 
-o SC706(Z80) + (SC707 or SC714 RAM) + (SC716(SIO/2) + SC718(CTC)) or SC725(SIO/2 + CTC) 
+o SC706(Z80) + (SC707 or SC714 RAM) + (SC716(SIO) + SC718(CTC)) or SC725(SIO + CTC) 
 
 • any CPU Z80 board supporting IM2 + any 64KB RAM board + any CTC board + any SIO/2 ( or KIO board ), where the I/O ports must be set in the source code (see manual, chapter Porting RTM/Z80 to other hardware)
 
-The mandatory hardware requirements: 64KB RAM, support of Z80 Interrupt Mode 2, CTC, SIO/2 or KIO.   
+The mandatory hardware requirements: 64KB RAM, support of Z80 Interrupt Mode 2, CTC, SIO or KIO.   
 
 New in v2.4 : see DEMO folder for getxfile, putxfile (XMODEM compatible)
 
