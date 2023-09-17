@@ -9,7 +9,7 @@ RTM/Z80 will run, after setting the appropriate system parameters, on the follow
 
 • Z80SIM Z80 simulator (e.g. on Windows, under CygWin)
 
-• Z80ALL standalone Z80 computer (25MHz Z80, 4 x 32KB RAM, KIO, VGA, PS/2, DS1302)
+• Z80ALL standalone homebrew Z80 computer (25MHz Z80, 4 x 32KB RAM, KIO, VGA, PS/2, DS1302)
 
 • RC2014 homebrew Z80 computer, using the following hardware configuration options:
 
