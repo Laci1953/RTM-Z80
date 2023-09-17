@@ -19,6 +19,10 @@ o any CPU Z80 board + Memory Module(32KB ROM + 2x64KB RAM) + SC110(CTC, SIO) (+ 
 
 o any CPU Z80 board + 512KB RAM+512KB ROM Memory Module + SC110(CTC, SIO) (+ Digital I/O module)
 
+• RCBUS based homebrew Z80 computer, using the following hardware configuration options:
+
+o SC706(Z80) + (SC707 or SC714 RAM) + (SC716(SIO/2) + SC718(CTC)) or SC725(SIO/2 + CTC) 
+
 • any CPU Z80 board supporting IM2 + any 64KB RAM board + any CTC board + any SIO/2 ( or KIO board ), where the I/O ports must be set in the source code (see manual, chapter Porting RTM/Z80 to other hardware)
 
 The mandatory hardware requirements: 64KB RAM, support of Z80 Interrupt Mode 2, CTC, SIO/2 or KIO.   
