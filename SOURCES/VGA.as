@@ -214,13 +214,18 @@ ENDIF
 ;	HL=pointer of string
 ;
 __OutStringVGA:
+	di
+loopc:
 	ld	d,1		;affectCursor
 	ld	a,(hl)
 	or	a
-	ret	z
+	jr	nz,nextc
+	ei
+	ret
+nextc:
 	call	OutChar
 	inc	hl
-	jr	__OutStringVGA
+	jr	loopc
 ;
 ;	Read character from VGA
 ;
