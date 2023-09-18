@@ -45,7 +45,7 @@ real time clock DS1302 added for Z80ALL
 
 # DEMO VIDEOS
 
-RTMDEMO - 2 concurrent games, on RC2014
+RTMDEMO.MP4 - 2 concurrent games, executed on RC2014
 
-BIRDS - the 'birds, eagle & kite' game, on Z80ALL
+BIRDS.MP4 - the 'birds, eagle & kite' game, executed on Z80ALL
 
