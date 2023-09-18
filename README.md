@@ -43,7 +43,7 @@ extra 2x32KB RAM support added for Z80ALL,
 
 real time clock DS1302 added for Z80ALL
 
-# DEMO VIDEOS
+# DEMO VIDEOS (see source files in the DEMO folder)
 
 RTMDEMO.MP4 - 2 concurrent games, executed on RC2014
 
