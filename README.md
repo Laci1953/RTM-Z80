@@ -1,4 +1,7 @@
-# RTM-Z80 - last update on 18 Sept 2023
+# RTM-Z80
+
+(last update on 18 Sept 2023)
+
 RTM/Z80 is a multitasking kernel, built for Z80 based computers, written in Z80 assembly language, providing its users with an Application Programming Interface (API) accessible from programs written in the C language and the Z80 assembly language.
 
 It is intended to be a simple and easy to use learning tool, for those who want to understand the tips and tricks of the multitasking software systems.
@@ -43,7 +46,9 @@ extra 2x32KB RAM support added for Z80ALL,
 
 real time clock DS1302 added for Z80ALL
 
-# DEMO VIDEOS (see source files in the DEMO folder)
+# DEMO VIDEOS 
+
+(see source files in the DEMO folder)
 
 RTMDEMO.MP4 - 2 concurrent games, executed on RC2014
 
