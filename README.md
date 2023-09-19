@@ -78,4 +78,4 @@ for Z80ALL, the "RTM/Z80 system status", displayed in real time during the execu
 - viewing the task execution dynamics ( the tasks active <---> waiting switching )
 - learning about the system load ( how long, in %, stays the system idle - is the % dangerously low  ? )
 
-This way, a multitasking application can be fine-tuned, in an efficient way.
+Using the real-time VGA system status display, a multitasking application can be fine-tuned, in an efficient way.
