@@ -56,25 +56,17 @@ BIRDS.MP4 - the 'birds, eagle & kite' game, executed on Z80ALL
 
 # System status display
 
-(only for Z80ALL version)
-(sample VGA screen)
+(only for Z80ALL version, sample VGA screen)
  
                     RTM/Z80 - System status display
 
         Dynamic memory (8KB) - each * represents a block of 16 bytes
- -------------------------------------------------------------------------
  *************************************
  *****************                                           *************
 
 
 
-
-
-
- ------------------------------------------------------------------------
-
      Tasks               Status        CPU%
- -----------------------------------------------------------------------
      Priority(hexa) Running Waiting	
 
         00                      *       29
