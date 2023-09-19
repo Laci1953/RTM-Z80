@@ -72,6 +72,10 @@ BIRDS.MP4 - the 'birds, eagle & kite' game, executed on Z80ALL
         0A             *                10
         20                      *       61
 
+![running](https://github.com/Laci1953/RTM-Z80/assets/87603175/7e8091fa-14ae-4b71-8cef-8817297eeeb6)
+
+![after shutdown](https://github.com/Laci1953/RTM-Z80/assets/87603175/38a87e94-a176-43e1-b21b-9fbceba6ebad)
+
 for Z80ALL, the "RTM/Z80 system status", displayed in real time during the execution of a multitasking application, is very useful for:
 
 - assessing the dynamic memory load ( is it dangerously close to the maximum capacity? )
