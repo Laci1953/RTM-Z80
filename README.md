@@ -29,6 +29,7 @@ RTM/Z80 can be used on the following environments:
 The mandatory hardware requirements: 64KB RAM, support of Z80 Interrupt Mode 2, CTC, SIO or KIO.   
 
 New in v2.4 : improved communications I/O support
+
 see DEMO folder for getxfile, putxfile (XMODEM compatible)
 
 New in v2.5 : KIO support added
