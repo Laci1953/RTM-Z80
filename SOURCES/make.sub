@@ -1,0 +1,24 @@
+z80as -j dlist
+z80as -j balloc
+z80as rtsys
+z80as -j rtclk
+z80as -j queue
+z80as -j mailbox
+z80as -j io
+z80as -j snapshot
+z80as -j hexload
+z80as -j util
+z80as -j cmd
+z80as boot128
+z80as boot512
+z80as -j move512
+z80as -j csv
+z80as -j xmodem
+z80as bdos
+z80as bios
+z80as printer
+z80as -j ballo512
+z80as -j move32k
+z80as -j ds1302
+z80as -j vga
+z80as cpmboot
