@@ -58,8 +58,8 @@ BIRDS.MP4 - the 'birds, eagle & kite' game, executed on Z80ALL
 
 (only for Z80ALL version)
 
-Sample screen
--------------
+(sample VGA screen)
+
 
                     RTM/Z80 - System status display
 
