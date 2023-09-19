@@ -60,7 +60,6 @@ BIRDS.MP4 - the 'birds, eagle & kite' game, executed on Z80ALL
 
 (sample VGA screen)
 
-
                     RTM/Z80 - System status display
 
         Dynamic memory (8KB) - each * represents a block of 16 bytes
@@ -82,5 +81,3 @@ BIRDS.MP4 - the 'birds, eagle & kite' game, executed on Z80ALL
         00                      *       29
         0A             *                10
         20                      *       61
-
-
