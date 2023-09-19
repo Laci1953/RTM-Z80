@@ -44,7 +44,7 @@ PS/2 keyboard support added for Z80ALL,
 
 extra 2x32KB RAM support added for Z80ALL,
 
-real time clock DS1302 added for Z80ALL
+real time clock DS1302 support added for Z80ALL
 
 # DEMO VIDEOS 
 
