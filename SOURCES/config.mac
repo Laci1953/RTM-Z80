@@ -64,7 +64,7 @@ NOSIO_RING	equ	1-SIO_RING
 V_M	equ	2
 V_m	equ	6
 ;
-;Memory map for CP/M version
+;Memory map for Z80SIM version
 ;
 ;	0100H - 7B00H	sys code & data, apps code & data
 ;	7B00H - 7D00H	HEX loader buffers
