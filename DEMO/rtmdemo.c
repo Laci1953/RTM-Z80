@@ -532,13 +532,11 @@ void Hanoi(void)
 void (*fp)(void);
 
 char* Wellcome="\r\nRTM/Z80 Demo program\r\nShowing two concurrent games being played: Chess Knight's tour & Tower of Hanoi";
-char* ScreenWarning="\r\nPlease extend the VT100 compatible window size to at least 48 rows x 80 columns";
-char* Ctrl_C_notice="\r\nPlease press ENTER to start!\r\n(you will be able to vary the speed by pressing CTRL_C)";
-char* Ctrl_C_event="Please enter your choice (0=faster, 1=slower, 2=quit):";
+char* ScreenWarning="\r\nPlease extend the VT100 compatible window size to at least 48 rows x 80 columns\r\nPlease press ENTER to start!\r\n(then you may hit f=faster, s=slower, q=quit)";
 
 struct Semaphore* Timer_Sem;
 
-char Speed[2];
+char Speed;
 short Pause, MinPause, TicsPerSec;
 struct RTClkCB* Timer;
 unsigned long ts,te;
@@ -583,10 +581,10 @@ void MainTask(void)
     TicsPerSec=100;
   }
 
-  my_printf(Ctrl_C_notice);
-
-  CON_Read(Speed,1,IO_Sem);
-  Wait(IO_Sem);
+  do
+  {
+  }
+  while (!CON_Status());
 
   ts=GetTicks();
 
@@ -618,33 +616,18 @@ void MainTask(void)
     if (!GetTaskSts(TCB_Chess) && !GetTaskSts(TCB_Hanoi))
       ReportAndQuit();
  
-    if (CTRL_C())
+    if (Speed = CON_Status())
     {
       StopTimer(Timer);
 
-      StartTimer(Timer, Timer_Sem, Pause*2, 0); /* wait 2 seconds */
-      Wait(Timer_Sem);
-
-      SetYX('4','1','0','1',bufMain);
-
-      strcat(bufMain,Ctrl_C_event);
-      my_printf(bufMain);
-
-      CON_Read(Speed,1,IO_Sem);
-      Wait(IO_Sem);
-
-      SetYX('4','1','0','1',bufMain);
-      strcat(bufMain,"\033[2K");	/* erase line */
-      my_printf(bufMain);
-
-      if (Speed[0] == '2')
+      if (Speed == 'q')
       {
         StopTask(TCB_Chess);
         StopTask(TCB_Hanoi);
         ReportAndQuit();
       }
 
-      if (Speed[0] == '0')
+      if (Speed == 'f')
       {
         Pause=Pause/2;
 
@@ -657,6 +640,7 @@ void MainTask(void)
 
       StartTimer(Timer, Timer_Sem, Pause, 1);
     }
+
   } while (1==1);
 }
 
@@ -665,3 +649,4 @@ void main(void)
   fp = MainTask;
   StartUp(0x1E0, (void*)fp, 10);
 }
+
