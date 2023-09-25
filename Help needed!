@@ -1,3 +1,0 @@
-I do not know how it is possible to modify the "languages" settings; my code is in Z80 assembly language, only some demo apps are written in C, but I'm listed as "C 100%"
-I tried to use gitattributes, only with limited success ( I dropped the "Angel Script" attribute... that was because my source files use the .as extension.
-It is possible to do-it without renaming all my source files to .ASM (I rather prefer NOT, I must modify also a lot of othrt files...) ???
