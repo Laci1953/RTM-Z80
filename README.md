@@ -1,4 +1,4 @@
-# Retro Tiny Multitasking kernel - Z80
+# Retro Tiny Multitasking kernel for Z80 - RTM/Z80
 
 (last update on 30 Sept 2023)
 
