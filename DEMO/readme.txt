@@ -1,7 +1,15 @@
 Demo programs
 -------------
 
-New in v2.4: getxfile & putxfile implement the XMODEM protocol (SIO, 115200 bauds).
+Various demo apps, showing RTM/Z80 in action.
+
+RTMDEMO: 2 concurrent games (Chess Knights's tour & Hanoi towers) being played in parallel
+MSORT: merge sort using multitasking
+BIRDS: the 'birds, eagle & kite' game
+
+New in v2.4: 
+
+GETXFILE & PUTXFILE implement the XMODEM protocol (SIO, 115200 bauds).
 
 They can be used to move files from/to RC2014 - from/to the computer/laptop that runs the terminal (e.g. TeraTerm).
 
