@@ -1,0 +1,7 @@
+z80as -j watson
+z80as -j wutil
+z80as -j wdiss
+xsub
+link
+-c100h -pboot=0E300H/100H,text=0/,data/,bss/ -owatson.com \
+cpmboot.obj watson.obj wutil.obj wdiss.obj
