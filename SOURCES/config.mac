@@ -10,18 +10,18 @@ CMD		equ 0	;1=CON CMD task is included
 RSTS		equ 1	;1=use RST for list routines (not for SIM)
 WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
 C_LANG		equ 1	;1=Support for C language API
-IO_COMM		equ 1	;1=Support for async communications I/O
+IO_COMM		equ 0	;1=Support for async communications I/O
 SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
 MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM)
 M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
-BDOS		equ 1	;1=BDOS disk file support
+BDOS		equ 0	;1=BDOS disk file support
 LPT		equ 0	;1=Parallel Printer (Compatibility mode)
 EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
-Z80ALL		equ 1	;1=Runs on Z80ALL
-KIO		equ 1	;1=KIO is used, 0:SC110 is used
-PS2		equ 1	;1=PS/2 keyboard for Z80ALL
-DS1302		equ 1	;1=DS1302 for Z80ALL
-SYSSTS		equ 1	;1=System status on VGA screen for Z80ALL
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
 ;
 ;	ROM/RAM options (only if SIM=0)
 ;
