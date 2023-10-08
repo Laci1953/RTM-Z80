@@ -69,6 +69,6 @@ For Z80ALL, the "RTM/Z80 system status", displayed in real time during the execu
 - assessing the dynamic memory load ( is it dangerously close to the maximum capacity? )
 - viewing the task execution dynamics ( the tasks active <---> waiting switching )
 - learning about the system load ( how long, in %, stays the system idle - is the % dangerously low  ? )
-- learning about the tasks stack ( is remaining space in stack dangerously low ? )
+- learning about the tasks stack size ( is the remaining space in stack dangerously low ? )
 
 Using the real-time VGA system status display, a multitasking application can be fine-tuned, in an efficient way.
