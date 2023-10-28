@@ -17,7 +17,11 @@ RTM/Z80 can be used on the following environments:
 • RC2014 homebrew Z80 computer, using the following hardware configuration options:
 
   o SC108(Z80 + 2x64KB RAM) + SC110(CTC+SIO) , or
+  
+  o SC114(Z80 + 2x64KB RAM) + SC110(CTC+SIO), or
+  
   o any Z80 board + 64/128KB RAM + SC110(CTC+SIO) , or
+  
   o any Z80 board + 512KB RAM+512KB ROM Memory Module + SC110(CTC+SIO)
 
 • RCBUS based homebrew Z80 computer, using the following hardware configuration options:
