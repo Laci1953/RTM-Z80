@@ -6,6 +6,7 @@ Various demo apps, showing RTM/Z80 in action.
 RTMDEMO: 2 concurrent games (Chess Knights's tour & Hanoi towers) being played in parallel
 MSORT: merge sort using multitasking
 BIRDS: the 'birds, eagle & kite' game
+
 GETXFILE & PUTXFILE implement the XMODEM protocol (SIO, 115200 bauds).
 They can be used to move files from/to RC2014 - from/to the computer/laptop that runs the terminal (e.g. TeraTerm).
 
@@ -19,3 +20,4 @@ Of course, you must use in TeraTerm the command : File > Transfer > XMODEM > Sen
 
 They perform all the serial communication I/O, at 115200 bauds, on interrupts.
 
+See "How to configure and run the demo apps.txt" for details related on how to configure RTM/Z80 to run the demo apps
