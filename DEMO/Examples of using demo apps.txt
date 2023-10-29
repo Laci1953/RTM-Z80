@@ -1,0 +1,206 @@
+----------------------------------------------------------------------------------------
+CASE 1 : RTMDEMO executed on Z80SIM
+
+Hardware & software configuration:
+
+Laptop with Windows 10
+CygWin installed
+Udo Munk's Z80SIM installed (version >= 1.36)
+HiTech C installed on drive I
+RTM/Z80 sources on drive I
+RTMDEMO.C, RAND.AS on drive I
+
+(on laptop)
+ open (double click on) CygWin
+ $ cd z80pack-1.36
+ $ cd cpmsim
+ $ ./cpm2
+Z80-SIM
+Release 1.36, Copyright (C) 1987-2017 by Udo Munk
+CPU speed is unlimited
+Booting...
+64K CP/M Vers. 2.2 (Z80 CBIOS V1.2 for Z80SIM, Copyright 1988-2007 by Udo Munk)
+A>i:
+I>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 1	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 0	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 0	;1=Support for async communications I/O
+SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 0	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 0	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+I>submit make
+I>submit makelib
+I>C -v -o rtmdemo.c rand.as rt.lib
+I>rtmdemo
+RTM/Z80 2.6
+RTM/Z80 Demo program
+Showing two concurrent games being played: Chess Knight's tour & Tower of Hanoi
+Please extend the VT100 compatible window size to at least 48 rows x 80 columns
+Please press ENTER to start!
+
+----------------------------------------------------------------------------------------
+CASE 2 : BIRDS executed on RC2014 CP/M
+
+Hardware & software configuration:
+
+RC2014 (SC108, SC110, CF with CP/M)
+HiTech C installed on drive C
+RTM/Z80 sources on drive C
+BIRDS.C, RAND.AS on drive C
+
+(boot RC2014)
+Small Computer Monitor - S3
+*cpm
+RC2014 CP/M BIOS 1.2 by G. Searle 2007-18
+
+CP/M 2.2 Copyright 1979 (c) by Digital Research
+
+A>C:
+C>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 0	;1=Support for async communications I/O
+SC108		equ 1	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 0	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 1	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+C>submit make
+C>submit makelib
+C>c -v -c -o birds.c
+C>zas rand.as
+C>link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -Obirds.com \
+cpmboot.obj birds.obj rand.obj rt.lib libc.lib
+C>birds
+RTM/Z80 2.6
+
+The game 'Birds, eagle and the kite'
+
+(please increase the window size to 48 lines)
+By moving the kite (#), try to protect the 64 birds (v)
+ from the attack of the quick eagle (W).
+Each bird will try to fly higher and higher, to safety;
+ reaching the top of screen, it escapes the eagle.
+The eagle will try to hunt them, by moving closer and closer.
+If the eagle reaches a bird, the bird is captured.
+But, the eagle can be blocked by the kite and must
+ go around it; it's the only chance for the poor birds!
+Keys to move the kite: s=left, d=right, e=up, x=down
+To change the speed at which the eagle flies, press m=faster, l=slower
+ (the game starts with a lazy eagle)
+To quit, press q
+Press any key to start...
+
+----------------------------------------------------------------------------------------
+CASE 3 : GETXFILE executed on RC2014 CP/M
+
+Hardware & software configuration:
+
+RC2014 (SC108, SC110, Digital I/O module, CF with CP/M)
+HiTech C installed on drive C
+RTM/Z80 sources on drive C
+GETXFILE.C, FILEX.AS on drive C
+
+(boot RC2014)
+Small Computer Monitor - S3
+*cpm
+RC2014 CP/M BIOS 1.2 by G. Searle 2007-18
+
+CP/M 2.2 Copyright 1979 (c) by Digital Research
+
+A>C:
+C>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 1	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 1	;1=Support for async communications I/O
+SC108		equ 1	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 1	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 1	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+C>submit make
+C>submit makelib
+C>c -v -c -o getxfile.c
+C>zas filex.as
+C>link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -Ogetxfile.com \
+cpmboot.obj getxfile.obj filex.obj rt.lib libc.lib
+C>getxfile
+
+RTM/Z80 2.6
+Receive files via XMODEM
+Save file as (e.g. a:myfile.txt<CR>) :
+
+
