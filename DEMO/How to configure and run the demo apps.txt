@@ -1,0 +1,461 @@
+----------------------------------------------------------------------------------------
+CASE 1 : RTMDEMO executed on Z80SIM under CP/M
+
+Hardware & software configuration:
+
+Laptop with Windows 10
+CygWin installed
+Udo Munk's Z80SIM installed (version >= 1.36)
+HiTech C installed on drive I
+RTM/Z80 sources on drive I
+RTMDEMO.C, RAND.AS on drive I
+
+(on laptop)
+ open (double click on) CygWin
+ $ cd z80pack-1.36
+ $ cd cpmsim
+ $ ./cpm2
+Z80-SIM
+Release 1.36, Copyright (C) 1987-2017 by Udo Munk
+CPU speed is unlimited
+Booting...
+64K CP/M Vers. 2.2 (Z80 CBIOS V1.2 for Z80SIM, Copyright 1988-2007 by Udo Munk)
+A>i:
+
+(edit config.mac, see results...)
+
+I>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 1	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 0	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 0	;1=Support for async communications I/O
+SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 0	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 0	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+I>submit make
+I>submit makelib
+I>C -v -o rtmdemo.c rand.as rt.lib
+I>rtmdemo
+RTM/Z80 2.6
+RTM/Z80 Demo program
+Showing two concurrent games being played: Chess Knight's tour & Tower of Hanoi
+Please extend the VT100 compatible window size to at least 48 rows x 80 columns
+Please press ENTER to start!
+
+----------------------------------------------------------------------------------------
+CASE 2 : BIRDS executed on RC2014 under CP/M (SC108, SC110, CF with CP/M)
+
+Hardware & software configuration:
+
+RC2014 (SC108, SC110, CF with CP/M)
+HiTech C installed on drive C
+RTM/Z80 sources on drive C
+BIRDS.C, RAND.AS on drive C
+
+(boot RC2014)
+Small Computer Monitor - S3
+*cpm
+RC2014 CP/M BIOS 1.2 by G. Searle 2007-18
+
+CP/M 2.2 Copyright 1979 (c) by Digital Research
+
+A>C:
+
+(edit config.mac, see results...)
+
+C>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 0	;1=Support for async communications I/O
+SC108		equ 1	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 0	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 1	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+C>submit make
+C>submit makelib
+C>c -v -c -o birds.c
+C>zas rand.as
+C>link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -Obirds.com \
+cpmboot.obj birds.obj rand.obj rt.lib libc.lib
+C>birds
+RTM/Z80 2.6
+
+The game 'Birds, eagle and the kite'
+
+(please increase the window size to 48 lines)
+By moving the kite (#), try to protect the 64 birds (v)
+ from the attack of the quick eagle (W).
+Each bird will try to fly higher and higher, to safety;
+ reaching the top of screen, it escapes the eagle.
+The eagle will try to hunt them, by moving closer and closer.
+If the eagle reaches a bird, the bird is captured.
+But, the eagle can be blocked by the kite and must
+ go around it; it's the only chance for the poor birds!
+Keys to move the kite: s=left, d=right, e=up, x=down
+To change the speed at which the eagle flies, press m=faster, l=slower
+ (the game starts with a lazy eagle)
+To quit, press q
+Press any key to start...
+
+----------------------------------------------------------------------------------------
+CASE 3 : BIRDS executed on RC2014 under CP/M (any Z80 board e.g. SC153 or SC706, SC110, 512KB RAM + 512KB ROM board, 64MB CF with CP/M)
+
+Hardware & software configuration:
+
+RC2014 :
+ burn CPM_boot_512_SIO_CF64.hex from https://github.com/Laci1953/RC2014-CPM/tree/main/BOOT , 
+ and insert this EPROM to the 512 KB RAM + 512KB ROM board, keeping the 512KB RAM on board
+HiTech C installed on drive C
+RTM/Z80 sources on drive C
+BIRDS.C, RAND.AS on drive C
+
+(boot RC2014)
+
+RC2014 CP/M BIOS 1.2 by G. Searle 2007-18
+
+CP/M 2.2 Copyright 1979 (c) by Digital Research
+
+A>C:
+
+(edit config.mac, see results...)
+
+C>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 0	;1=Support for async communications I/O
+SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 1	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 0	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 0	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+(edit cpmboot.as, modify: SETUP_UP_RAM	equ	0)
+
+C>submit make
+C>submit makelib
+C>c -v -c -o birds.c
+C>zas rand.as
+C>link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -Obirds.com \
+cpmboot.obj birds.obj rand.obj rt.lib libc.lib
+C>birds
+RTM/Z80 2.6
+
+The game 'Birds, eagle and the kite'
+
+(please increase the window size to 48 lines)
+By moving the kite (#), try to protect the 64 birds (v)
+ from the attack of the quick eagle (W).
+Each bird will try to fly higher and higher, to safety;
+ reaching the top of screen, it escapes the eagle.
+The eagle will try to hunt them, by moving closer and closer.
+If the eagle reaches a bird, the bird is captured.
+But, the eagle can be blocked by the kite and must
+ go around it; it's the only chance for the poor birds!
+Keys to move the kite: s=left, d=right, e=up, x=down
+To change the speed at which the eagle flies, press m=faster, l=slower
+ (the game starts with a lazy eagle)
+To quit, press q
+Press any key to start...
+
+----------------------------------------------------------------------------------------
+CASE 4 : BIRDS executed on RC2014 under CP/M (SC114, SC110, CF with CP/M)
+
+Hardware & software configuration:
+
+RC2014 (SC114, SC110, CF with CP/M)
+HiTech C installed on drive C
+RTM/Z80 sources on drive C
+BIRDS.C, RAND.AS on drive C
+
+(boot RC2014)
+Small Computer Monitor - S3
+*cpm
+RC2014 CP/M BIOS 1.2 by G. Searle 2007-18
+
+CP/M 2.2 Copyright 1979 (c) by Digital Research
+
+A>C:
+
+(edit config.mac, see results...)
+
+C>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 0	;1=Support for async communications I/O
+SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 1	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 0	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 0	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+(edit cpmboot.as, modify: SETUP_UP_RAM	equ	0)
+
+C>submit make
+C>submit makelib
+C>c -v -c -o birds.c
+C>zas rand.as
+C>link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -Obirds.com \
+cpmboot.obj birds.obj rand.obj rt.lib libc.lib
+C>birds
+RTM/Z80 2.6
+
+The game 'Birds, eagle and the kite'
+
+(please increase the window size to 48 lines)
+By moving the kite (#), try to protect the 64 birds (v)
+ from the attack of the quick eagle (W).
+Each bird will try to fly higher and higher, to safety;
+ reaching the top of screen, it escapes the eagle.
+The eagle will try to hunt them, by moving closer and closer.
+If the eagle reaches a bird, the bird is captured.
+But, the eagle can be blocked by the kite and must
+ go around it; it's the only chance for the poor birds!
+Keys to move the kite: s=left, d=right, e=up, x=down
+To change the speed at which the eagle flies, press m=faster, l=slower
+ (the game starts with a lazy eagle)
+To quit, press q
+Press any key to start...
+
+----------------------------------------------------------------------------------------
+CASE 5 : GETXFILE executed on RC2014 under CP/M
+
+Hardware & software configuration:
+
+RC2014 (SC108, SC110, Digital I/O module, CF with CP/M)
+HiTech C installed on drive C
+RTM/Z80 sources on drive C
+GETXFILE.C, FILEX.AS on drive C
+
+(boot RC2014)
+Small Computer Monitor - S3
+*cpm
+RC2014 CP/M BIOS 1.2 by G. Searle 2007-18
+
+CP/M 2.2 Copyright 1979 (c) by Digital Research
+
+A>C:
+
+(edit config.mac, see results...)
+
+C>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 1	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 1	;1=Support for async communications I/O
+SC108		equ 1	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 1	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 0	;1=Runs on Z80ALL
+KIO		equ 0	;1=KIO is used, 0:SC110 is used
+PS2		equ 0	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 0	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 1	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+C>submit make
+C>submit makelib
+C>c -v -c -o getxfile.c
+C>zas filex.as
+C>link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -Ogetxfile.com \
+cpmboot.obj getxfile.obj filex.obj rt.lib libc.lib
+C>getxfile
+
+RTM/Z80 2.6
+Receive files via XMODEM
+Save file as (e.g. a:myfile.txt<CR>) :
+
+----------------------------------------------------------------------------------------
+CASE 6 : MSORT executed on Z80ALL under CP/M with system status monitor on VGA
+
+Hardware & software configuration:
+
+Z80ALL
+HiTech C installed on drive C
+RTM/Z80 sources on drive C
+MSORT.C, RAND.AS on drive C
+
+(boot Z80ALL, boot CP/M)
+
+ZALLQ Monitor v0.91 3/28/23
+KIO detected
+
+>boot CP/M
+1--User Apps,
+2--CP/M2.2:
+3--CP/M3: 2 press Return to execute command
+
+Copyright 1979 (c) by Digital Research
+CP/M 2.2 for Z80ALLKQ, BIOS at 0xEE00, VT52 Esc seq, Num Keypad
+Rev1.8 5/1/23
+KIO detected
+
+b>C:
+
+(edit config.mac, see results...)
+
+C>type config.mac
+
+;	RTM/Z80 system configuration settings
+;
+DEBUG		equ 0	;1=debug mode ON: verify task SP, task TCB, dealloc, lists, etc.
+SIM		equ 0	;1=Runs under Z80SIM, 0=Runs on RC2014(SC108+SC110)
+DIG_IO		equ 0	;1=RC2014 Digital I/O module is used
+CMD		equ 0	;1=CON CMD task is included
+RSTS		equ 1	;1=use RST for list routines (not for SIM)
+WATSON		equ 0	;1=Watson is used (not for SIM, not for EXTM512)
+C_LANG		equ 1	;1=Support for C language API
+IO_COMM		equ 0	;1=Support for async communications I/O
+SC108		equ 0	;1=SC108 is used (32KB ROM, 128KB RAM)
+MM		equ 0	;1=Memory Module is used (32KB ROM, 128KB RAM) or SC114
+M512		equ 0	;1=512KB ROM & RAM module is used (512KB ROM, 512KB RAM)
+BDOS		equ 0	;1=BDOS disk file support
+LPT		equ 0	;1=Parallel Printer (Compatibility mode)
+EXTM512		equ 0	;1=Extended RAM/ROM memory support for M512 (set-it to 0 if M512=0)
+Z80ALL		equ 1	;1=Runs on Z80ALL
+KIO		equ 1	;1=KIO is used, 0:SC110 is used
+PS2		equ 1	;1=PS/2 keyboard for Z80ALL
+DS1302		equ 0	;1=DS1302 for Z80ALL
+SYSSTS		equ 1	;1=System status on VGA screen for Z80ALL
+;
+;	ROM/RAM options (only if SIM=0)
+;
+RAM128K		equ 0	;0=only 64K RAM, 1= 2 x 64K RAM available
+ROM		equ 0	;1=sys code on ROM, 0=ROM not used
+BOOT_CODE	equ 0	;1=bootstrap code included in code, 0=no bootstrap code
+
+(...)
+
+(edit cpmboot.as, modify: SETUP_UP_RAM	equ	0)
+
+C>submit make
+C>submit makelib
+C>c -v -c -o msort.c
+C>zas rand.as
+C>link
+-x -z -C100H -Pboot=0E300H/100H,zero=0/,text/,data/,ram=0D000H/,bss/ -Omsort.com \
+cpmboot.obj msort.obj rand.obj rt.lib libc.lib
+C>msort
+RTM/Z80 2.6
+Given array is
+7621 1402 7718 28000 4942 8212 27457 12260 6090 499 14159 6023 14701 26090 29410 8355 27163 20392 16037 16211 20184 11145 4478 18281 25488 28357 20291 23220 13492 11715 26917 25496 8335 7036 19310 27664 1634 3641 25328 26621 26737 2521 3691 19958 23533 22139 9678 11759 6210 26462 29242 8781 2959 9577 28897 8481 2233 1875 27332 2176 27812 17915 7975 11681 25119 17577 29025 193 20785 23701 18526 18989 8131 16956 3666 9729 29906 16860 25803 2571 17356 15262 4324 14293 9851 28150 27645 25207 731 17196 21254 15982 9002 1841 25086 12209 15690 24134 1400 7460 11299 189 3154 9472 14098 29517 13031 17927 8421 7756 26704 12400 31860 4439 12426 17840 9150 31872 25310 21976 32196 21707 8723 28102 3969 10598 29035 19849 17485 24252 15548 12237 24617 10195 31284 9284 263 1158 8933 7501 11152 737 10840 23899 21411 24674 23306 31525 14545 10617 9907 29452 886 21098 15961 17104 12165 7795 1952 7371 3703 22765 5178 30590 4698 31301 12777 3659 30174 18899 25411 24738 3002 18321 6422 19807 3310 26771 8707 12690 22190 28654 15010 31895 31564 16226 11045 185 2903 26567 16709 22452 32754 14257 10566 18755 24503 29045 7120 6889 28702 7777 6326 21655 18264 1645 17909 21866 31258 5729 5298 22932 3741 15741 32764 32252 32509 15677 4012 22912 5516 30373 21367 11203 11366 30313 2760 20927 30328 22301 26801 22889 13023 27697 16331 31782 15953 3226 31674 4009 24324 14186 26987 22917 21320 1139 20717 6206 31357 23455 16725 3040 9949 28985 25231 30813 24758 4267 3145 13725 7008 24181 9159 10087 14765 13658 20054 356 3645 26101 9530 7718 11552 17278 15424 21070 372 4649 27882 32742 27872 12974 31132 12423 3454 21863 29332 12424 1778 13005 29479 30615 13577 24785 23893 22958 26601 13088 4657 16052 8902 10214 6348 19891 28025 209 19749 21898 4738 14571 77 30942 661 31025 8385 8545 14505 29471 7649 31255 7919 12891 19412 26052 16583 13590 14089 25552 7829 27455 12741 32556 28952 7014 23154 8259 17091 12562 13838 10006 27712 27174 9050 21341 24227 11044 16760 15174 4618 22081 19642 9138 30095 9238 11777 14486 7407 12634 2068 22357 5867 31002 21536 17922 26145 27802 27594 909 10863 15521 31511 8175 29467 23204 26848 29932 12205 10321 4497 9341 10928 31625 10518 25927 8932 23692 7041 30508 15708 18005 4067 8796 22106 7271 24560 17635 3129 25073 9277 23264 24565 16999 11999 32319 11983 8811 30688 25827 15401 22013 808 13347 5297 6999 32719 23363 17598 10419 14923 7044 12776 20362 17871 15390 29767 31660 22522 1455 5190 10781 27599 1289 2185 9071 29157 26468 23310 31776 31254 24366 586 15897 29376 23497 26966 30007 28288 31191 3102 23647 21926 25573 15405 21240 16879 17012 12360 22082 3705 21216 5041 8020 31566 31776 14934 3870 7710 1814 23632 24106 1103 15774 5607 29204 4200 7738 30843 23705 273 23765 30798 15969 26854 12459 31769 20897 8225 2489 17939 31668 1444 22671 24384 127 24544 22775 1318 15149 22267 17774 25879 20128 29167 10796 20082 32265 3828 15054 32160 23542 1702 22924 7299 12397 10414 28305 25666 25888 28442 2411 18933 24428 28952 23334 2626 15383 31692 8066 13293 18959 9449 4417 10393 20267 7366 1785 32260 1658 7207 28640 12463 31516 4966 22134 11584 2822 2562 3079 3968 26791 16762 14404 21321 17842 24828 28147 28025 16529 7445 18910 11149 5755 1454 5575 19004 598 11010 15639 31436 24258 8861 18219 4290 3066 14273 15722 9774 18294 13384 20544 2168 22114 13905 16606 9865 23096 23835 9203 17438 12411 12477 25610 23354 8025 29632 23241 10262 25671 25508 19964 5797 17159 10215 22797 32162 6324 6101 22059 2506 20668 13755 26383 8191 28431 21435 12860 1578 12323 4787 7510 31565 32419 6964 30068 7251 31945 7429 5514 29346 20723 20071 9433 30013 25480 15515 4707 4530 7894 6636 13531 28215 14541 15458 26980 21001 13538 1472 6130 11205 10337 30189 28524 22784 29996 15965 1429 15730 29808 6742 32590 31266 15447 2972 15358 22684 407 30770 25346 4467 20455 17785 31877 9242 9998 32350 26422 29704 16432 17436 29497 8654 27565 20083 32648 28373 21335 21419 28264 24325 30379 22906 11336 17484 8061 3245 23040 30509 15581 9844 26234 3159 25540 17860 28887 282 4124 3347 21969 12815 24789 23120 7017 4542 6105 24356 20226 11109 28905 12075 3254 2781 2927 3505 3675 10634 4348 9675 11115 15012 30864 30920 23238 9114 1005 25111 2787 9566 4379 2453 30516 12098 19269 22705 12593 19685 17530 16198 5128 20544 18488 1618 10757 31185 2073 24539 12290 27482 16249 15288 11467 9839 30439 8229 20220 21732 4535 6226 15114 11029 25797 16454 5239 20448 16639 7968 10279 442 18580 22485 13835 25042 7830 27068 4263 1350 29525 24761 6951 27619 13358 23679 28046 29147 2325 6036 26554 7591 19968 26919 8410 12796 5339 24103 3265 7031 1959 6477 28114 21712 12942 16820 8889 14406 4107 21697 28507 30906 3496 23940 5259 12899 8610 10970 16121 23064 9587 25085 28018 19480 14456 15930 18539 26773 9732 12822 13066 26449 14838 5591 5736 23417 28042 30430 19410 25027 17219 20658 16310 24708 30677 1563 21982 14723 1919 23523 23670 8773 17861 29014 24891 31109 8984 24655 27564 20466 8105 1868 32092 26165 14283 28706 13138 17759 16554 13728 30610 13197 16951 17051 21340 8034 6965 13493 11330 2308 2561 3716 12002 4813 17207 17307 4636 3602 5649 158 14073 5724 30784 13420 28525 22657 5389 22468 11166 2284 11731 13681 15031 26119 20661 31344 21265 26556 6560 19844 3203 10341 12968 32155 13059 26842 24024 29120 22984 27606 22230 13704 496 30092 26325 24403 24232 10157 25621 19618 29164 10415 28432 1123 3257 16657 15605 4182 28747 13537 18179 26272 19963 4899 8354 11226 32697 19304 10327 21974 30665 21312 19001 1234 2532 8921 28734 9801 2696 25007 564 8248 6694 11042 17791 14530 30638 24318 20462 19186 6315 16397 26798 20209 23658 14174 2578 20563 22191 11823 2739 2394 27720 9324 30565 17031 1543 133 9828 14894 21880 9548 3597 16841 15899
+Sorted array is
+77 127 133 158 185 189 193 209 263 273 282 356 372 407 442 496 499 564 586 598 661 731 737 808 886 909 1005 1103 1123 1139 1158 1234 1289 1318 1350 1400 1402 1429 1444 1454 1455 1472 1543 1563 1578 1618 1634 1645 1658 1702 1778 1785 1814 1841 1868 1875 1919 1952 1959 2068 2073 2168 2176 2185 2233 2284 2308 2325 2394 2411 2453 2489 2506 2521 2532 2561 2562 2571 2578 2626 2696 2739 2760 2781 2787 2822 2903 2927 2959 2972 3002 3040 3066 3079 3102 3129 3145 3154 3159 3203 3226 3245 3254 3257 3265 3310 3347 3454 3496 3505 3597 3602 3641 3645 3659 3666 3675 3691 3703 3705 3716 3741 3828 3870 3968 3969 4009 4012 4067 4107 4124 4182 4200 4263 4267 4290 4324 4348 4379 4417 4439 4467 4478 4497 4530 4535 4542 4618 4636 4649 4657 4698 4707 4738 4787 4813 4899 4942 4966 5041 5128 5178 5190 5239 5259 5297 5298 5339 5389 5514 5516 5575 5591 5607 5649 5724 5729 5736 5755 5797 5867 6023 6036 6090 6101 6105 6130 6206 6210 6226 6315 6324 6326 6348 6422 6477 6560 6636 6694 6742 6889 6951 6964 6965 6999 7008 7014 7017 7031 7036 7041 7044 7120 7207 7251 7271 7299 7366 7371 7407 7429 7445 7460 7501 7510 7591 7621 7649 7710 7718 7718 7738 7756 7777 7795 7829 7830 7894 7919 7968 7975 8020 8025 8034 8061 8066 8105 8131 8175 8191 8212 8225 8229 8248 8259 8335 8354 8355 8385 8410 8421 8481 8545 8610 8654 8707 8723 8773 8781 8796 8811 8861 8889 8902 8921 8932 8933 8984 9002 9050 9071 9114 9138 9150 9159 9203 9238 9242 9277 9284 9324 9341 9433 9449 9472 9530 9548 9566 9577 9587 9675 9678 9729 9732 9774 9801 9828 9839 9844 9851 9865 9907 9949 9998 10006 10087 10157 10195 10214 10215 10262 10279 10321 10327 10337 10341 10393 10414 10415 10419 10518 10566 10598 10617 10634 10757 10781 10796 10840 10863 10928 10970 11010 11029 11042 11044 11045 11109 11115 11145 11149 11152 11166 11203 11205 11226 11299 11330 11336 11366 11467 11552 11584 11681 11715 11731 11759 11777 11823 11983 11999 12002 12075 12098 12165 12205 12209 12237 12260 12290 12323 12360 12397 12400 12411 12423 12424 12426 12459 12463 12477 12562 12593 12634 12690 12741 12776 12777 12796 12815 12822 12860 12891 12899 12942 12968 12974 13005 13023 13031 13059 13066 13088 13138 13197 13293 13347 13358 13384 13420 13492 13493 13531 13537 13538 13577 13590 13658 13681 13704 13725 13728 13755 13835 13838 13905 14073 14089 14098 14159 14174 14186 14257 14273 14283 14293 14404 14406 14456 14486 14505 14530 14541 14545 14571 14701 14723 14765 14838 14894 14923 14934 15010 15012 15031 15054 15114 15149 15174 15262 15288 15358 15383 15390 15401 15405 15424 15447 15458 15515 15521 15548 15581 15605 15639 15677 15690 15708 15722 15730 15741 15774 15897 15899 15930 15953 15961 15965 15969 15982 16037 16052 16121 16198 16211 16226 16249 16310 16331 16397 16432 16454 16529 16554 16583 16606 16639 16657 16709 16725 16760 16762 16820 16841 16860 16879 16951 16956 16999 17012 17031 17051 17091 17104 17159 17196 17207 17219 17278 17307 17356 17436 17438 17484 17485 17530 17577 17598 17635 17759 17774 17785 17791 17840 17842 17860 17861 17871 17909 17915 17922 17927 17939 18005 18179 18219 18264 18281 18294 18321 18488 18526 18539 18580 18755 18899 18910 18933 18959 18989 19001 19004 19186 19269 19304 19310 19410 19412 19480 19618 19642 19685 19749 19807 19844 19849 19891 19958 19963 19964 19968 20054 20071 20082 20083 20128 20184 20209 20220 20226 20267 20291 20362 20392 20448 20455 20462 20466 20544 20544 20563 20658 20661 20668 20717 20723 20785 20897 20927 21001 21070 21098 21216 21240 21254 21265 21312 21320 21321 21335 21340 21341 21367 21411 21419 21435 21536 21655 21697 21707 21712 21732 21863 21866 21880 21898 21926 21969 21974 21976 21982 22013 22059 22081 22082 22106 22114 22134 22139 22190 22191 22230 22267 22301 22357 22452 22468 22485 22522 22657 22671 22684 22705 22765 22775 22784 22797 22889 22906 22912 22917 22924 22932 22958 22984 23040 23064 23096 23120 23154 23204 23220 23238 23241 23264 23306 23310 23334 23354 23363 23417 23455 23497 23523 23533 23542 23632 23647 23658 23670 23679 23692 23701 23705 23765 23835 23893 23899 23940 24024 24103 24106 24134 24181 24227 24232 24252 24258 24318 24324 24325 24356 24366 24384 24403 24428 24503 24539 24544 24560 24565 24617 24655 24674 24708 24738 24758 24761 24785 24789 24828 24891 25007 25027 25042 25073 25085 25086 25111 25119 25207 25231 25310 25328 25346 25411 25480 25488 25496 25508 25540 25552 25573 25610 25621 25666 25671 25797 25803 25827 25879 25888 25927 26052 26090 26101 26119 26145 26165 26234 26272 26325 26383 26422 26449 26462 26468 26554 26556 26567 26601 26621 26704 26737 26771 26773 26791 26798 26801 26842 26848 26854 26917 26919 26966 26980 26987 27068 27163 27174 27332 27455 27457 27482 27564 27565 27594 27599 27606 27619 27645 27664 27697 27712 27720 27802 27812 27872 27882 28000 28018 28025 28025 28042 28046 28102 28114 28147 28150 28215 28264 28288 28305 28357 28373 28431 28432 28442 28507 28524 28525 28640 28654 28702 28706 28734 28747 28887 28897 28905 28952 28952 28985 29014 29025 29035 29045 29120 29147 29157 29164 29167 29204 29242 29332 29346 29376 29410 29452 29467 29471 29479 29497 29517 29525 29632 29704 29767 29808 29906 29932 29996 30007 30013 30068 30092 30095 30174 30189 30313 30328 30373 30379 30430 30439 30508 30509 30516 30565 30590 30610 30615 30638 30665 30677 30688 30770 30784 30798 30813 30843 30864 30906 30920 30942 31002 31025 31109 31132 31185 31191 31254 31255 31258 31266 31284 31301 31344 31357 31436 31511 31516 31525 31564 31565 31566 31625 31660 31668 31674 31692 31769 31776 31776 31782 31860 31872 31877 31895 31945 32092 32155 32160 32162 32196 32252 32260 32265 32319 32350 32419 32509 32556 32590 32648 32697 32719 32742 32754 32764
+Elapsed time: 2 seconds
+
+(system status is being displayed on VGA)
+----------------------------------------------------------------------------------------
+
+
