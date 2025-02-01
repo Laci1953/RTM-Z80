@@ -52,11 +52,9 @@ real time clock DS1302 support added for Z80ALL
 
 # Games executed under RTM/Z80 
 
-[(see source files in the DEMO folder)
+RTMDEMO - 2 concurrent games (DEMO folder)
 
-RTMDEMO.MP4 - 2 concurrent games, executed on RC2014
-
-BIRDS (https://github.com/Laci1953/RC2014-CPM/tree/main/birds) - the 'birds, eagle & kite' game, executed on Z80ALL
+BIRDS - the 'birds, eagle & kite' game (DEMO folder)
 
 # System status display
 
